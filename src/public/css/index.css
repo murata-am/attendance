@@ -1,0 +1,70 @@
+.attendance_container {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.attendance_content{
+    display: inline-block;
+    white-space: nowrap;
+
+    height: 30px;
+    text-align: center;
+    margin: 70px auto;
+}
+
+.status {
+    display: inline-block;
+    background-color: #C8C8C8;
+    color: #696969;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-weight: bolder;
+    font-size: 12px;
+}
+
+.date {
+    font-size: 32px;
+    margin: 18px auto;
+}
+
+.time {
+    font-size: 60px;
+    font-weight: bold;
+    margin-top: 0px;
+}
+
+.status_btn form {
+    display: inline-block;
+}
+
+.status_btn button {
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 50px;
+    font-size: 24px;
+    cursor: pointer;
+    margin: 15px;
+    
+}
+
+.btn-black {
+    background-color: #000;
+    color: #fff;
+
+}
+
+.btn-black:hover {
+    background-color: #333;
+}
+
+.btn-white {
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+}
+
+.btn-white:hover {
+    background-color: #dedbdb;
+}
+

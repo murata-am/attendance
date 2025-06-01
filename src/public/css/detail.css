@@ -1,0 +1,80 @@
+.detail_container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.title {
+    border-left: 8px solid #000;
+    text-align: left;
+    margin: 50px auto;
+    padding-left: 10px;
+
+}
+
+.row-name {
+    color: #737373;
+    text-align: justify;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.detail_table {
+    background-color: #FFFFFF;
+    border-collapse: collapse;
+}
+
+table {
+    width: 100%;
+    white-space: nowrap;
+}
+
+table tr {
+    border: solid 3px rgb(237, 237, 237);
+}
+
+.detail_table th,
+.detail_table td {
+    padding: 28px 40px;
+    text-wrap: ;
+}
+
+.correction-status{
+    text-align: right;
+    margin-top: 12px;
+}
+
+.correction-btn {
+    color: #FFFFFF;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 5px 25px;
+}
+
+.approved-comment {
+    color: red;
+}
+
+input {
+    padding: 3px 22px ;
+}
+
+.reason-textarea {
+    width: 98%;
+    height: 80px;
+    box-sizing: border-box;
+    resize: vertical;
+    padding: 6px;
+}
+
+.error__message {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+    text-align: left;
+}
+
