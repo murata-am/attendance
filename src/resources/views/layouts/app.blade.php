@@ -14,7 +14,7 @@
             <img src={{ asset("img/logo.svg") }} alt="COACHTECHロゴ">
             <nav class="header__nav">
                 <ul class="nav_link">
-                    @if(!in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice']))
+                    @if(!in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice', 'admin.login']))
                         @if (($statusKey ?? '') === 'finished_work')
                         <li><a href="/attendance/list" class="nav">今月の出勤一覧</a></li>
 

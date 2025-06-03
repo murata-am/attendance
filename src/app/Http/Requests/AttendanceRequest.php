@@ -63,7 +63,7 @@ class AttendanceRequest extends FormRequest
                     $co = Carbon::parse($clockOut);
 
                     if ($ci->gt($co)) {
-                        $validator->errors()->add('clock_out', '出勤時間もしくは退勤時間が不適切な値です');
+                        $validator->errors()->add('clock_in_out', '出勤時間もしくは退勤時間が不適切な値です');
                     }
 
                     $breakStarts = $this->input('break_start', []);
@@ -75,10 +75,9 @@ class AttendanceRequest extends FormRequest
                         if (empty($bs) && empty($be)) {
                             continue;
                         }
-                        
 
                         if (empty($bs) || empty($be)) {
-                            $validator->errors()->add("break_start.$i", '休憩開始と終了の両方を入力してください');
+                            $validator->errors()->add("break_time.$i", '休憩開始と終了の両方を入力してください');
                             continue;
                         }
 
@@ -86,23 +85,24 @@ class AttendanceRequest extends FormRequest
                             $bsCarbon = Carbon::parse($bs);
                             $beCarbon = Carbon::parse($be);
 
+                            $hasError = false;
+
                             if ($bsCarbon->gt($beCarbon)) {
-                                $validator->errors()->add("break_end.$i", '休憩開始時間もしくは終了時間が不正です');
-                                }
-
-                            if ($bsCarbon->lt($ci)) {
-                                $validator->errors()->add("break_start.$i", '休憩開始時間が勤務時間外です');
-                                }
-
-                            if ($beCarbon->gt($co)) {
-                                $validator->errors()->add("break_end.$i", '休憩終了時間が勤務時間外です');
+                                $validator->errors()->add("break_time.$i", '休憩開始時間もしくは終了時間が不適切な値です');
+                                $hasError = true;
                             }
+
+                            if ($bsCarbon->lt($ci) || $beCarbon->gt($co)) {
+                                $validator->errors()->add("break_time.$i", '休憩時間が勤務時間外です');
+                                $hasError = true;
+                            }
+
                         } catch (\Exception $e) {
-                            $validator->errors()->add("break_start.$i", '休憩時間の形式が不正です');
+                            $validator->errors()->add("break_time.$i", '休憩時間の形式が不正です');
                         }
                     }
                 }
-            
+
             } catch (\Exception $e) {
                 $validator->errors()->add('clock_in', '時刻の形式が不正です');
             }

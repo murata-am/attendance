@@ -31,7 +31,12 @@
                 <th class="row-name">出勤・退勤</th>
                 <th></th>
                 <th>
-                    <input type="time" name="clock_in" value="{{ old('clock_in', \Carbon\Carbon::parse($attendance->clock_in)->format('H:i')) }}">
+                    @if (empty($status) || $status === 'approved')
+                        <input type="time" name="clock_in" value="{{ old('clock_in', \Carbon\Carbon::parse($attendance->clock_in)->format('H:i')) }}">
+                    @else
+                        {{ \Carbon\Carbon::parse($correction->clock_in)->format('H:i') }}
+                    @endif
+
 
                     <div class="error__message">
                         @error('clock_in')
@@ -39,9 +44,20 @@
                         @enderror
                     </div>
                 </th>
-                <th>～</th>
                 <th>
-                    <input type="time" name="clock_out" value="{{ old('clock_out', \Carbon\Carbon::parse($attendance->clock_out)->format('H:i')) }}">
+                    <span>～</span>
+                    <div class="error__message">
+                        @error('clock_in_out')
+                            {{ $message }}
+                        @enderror
+                    </div>
+                </th>
+                <th>
+                    @if (empty($status) || $status === 'approved')
+                        <input type="time" name="clock_out" value="{{ old('clock_out', \Carbon\Carbon::parse($attendance->clock_out)->format('H:i')) }}">
+                    @else
+                        {{ \Carbon\Carbon::parse($correction->clock_out)->format('H:i') }}
+                    @endif
 
                     <div class="error__message">
                         @error('clock_out')
@@ -53,7 +69,11 @@
                 <th></th>
             </tr>
 
-            @foreach ($attendance->breakTimes as $i => $break)
+            @php
+                $breakTimes = $correction ? $correction->correctionBreakTimes : $attendance->breakTimes;
+            @endphp
+
+            @foreach ($breakTimes ?? [] as $i => $break)
                 <tr>
                     <th class="row-name">
                         @if ($i === 0)
@@ -64,46 +84,60 @@
                     </th>
                     <th></th>
                     <th>
-                        <input type="time" name="break_start[]" value="{{ old('break_start.' . $i, $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}">
+                        @if (empty($status) || $status === 'approved')
+                            <input type="time" name="break_start[]" value="{{ old('break_start.' . $i, $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}">
+                        @else
+                            {{ $break->corrected_break_start ? \Carbon\Carbon::parse($break->corrected_break_start)->format('H:i') : '-' }}
+                        @endif
 
+                    </th>
+                    <th>
+                        <span>～</span>
                         <div class="error__message">
-                            @error("break_start.$i")
+                            @error("break_time.$i")
                                 {{ $message }}
                             @enderror
                         </div>
                     </th>
-                    <th>～</th>
                     <th>
-                        <input type="time" name="break_end[]" value="{{ old('break_end.' . $i, $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '') }}">
-
-                        <div class="error__message">
-                            @error("break_end.$i")
-                                {{ $message }}
-                            @enderror
-                        </div>
+                        @if (empty($status) || $status === 'approved')
+                            <input type="time" name="break_end[]" value="{{ old('break_end.' . $i, $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '') }}">
+                        @else
+                            {{ $break->corrected_break_end ? \Carbon\Carbon::parse($break->corrected_break_end)->format('H:i') : '-' }}
+                        @endif
                     </th>
                     <th></th>
                 </tr>
             @endforeach
 
+            @if (empty($status) || $status === 'approved')
             <tr>
-                <th class="row-name">休憩{{ count($attendance->breakTimes) + 1 }}</th>
+                <th class="row-name">休憩{{ count($breakTimes) + 1 }}</th>
                 <th></th>
                 <th>
-                    <input type="time" name="break_start[]" value="{{ old('break_start.' . count($attendance->breakTimes)) }}">
+                        <input type="time" name="break_start[]" value="{{ old('break_start.' . count($attendance->breakTimes)) }}">
+                </th>
+                <th>
+                    <span>～</span>
+                    <div class="error__message">
+                        @error("break_time. ($i + 1)")
+                            {{ $message }}
+                        @enderror
+                    </div>
+
+                </th>
+                <th>
+                    <input type="time" name="break_end[]" value="{{ old('break_end.' . count($attendance->breakTimes)) }}">
 
                     <div class="error__message">
-                        @error("break_end.$i")
+                        @error("break_end.$i + 1")
                             {{ $message }}
                         @enderror
                     </div>
                 </th>
-                <th>～</th>
-                <th>
-                    <input type="time" name="break_end[]" value="{{ old('break_end.' . count($attendance->breakTimes)) }}">
-                </th>
                 <th></th>
             </tr>
+            @endif
 
             <tr>
                 <th class="row-name">備考</th>
@@ -129,5 +163,4 @@
             </div>
         </form>
     </div>
-
 @endsection

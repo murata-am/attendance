@@ -101,9 +101,11 @@ class AttendanceViewController extends Controller
 
     public function edit($id)
     {
-        $attendance = Attendance::with(['breakTimes', 'correctionRequest'])->findOrFail($id);
-
-
+        $attendance = Attendance::with([
+            'breakTimes',
+            'correctionRequest.correctionBreakTimes',
+            'correctionRequest.approval'
+        ])->findOrFail($id);
 
         $name = $attendance->user->name;
         $carbonDate = Carbon::parse($attendance->work_date);
@@ -113,12 +115,24 @@ class AttendanceViewController extends Controller
 
         $status = optional(optional($attendance->correctionRequest)->approval)->status;
 
+        $correction = null;
+
+        if ($status === 'pending' && $attendance->correctionRequest) {
+            $correction = $attendance->correctionRequest;
+
+            // attendanceの代わりにcorrectionRequestの値を使うように一部上書き
+            $attendance->clock_in = $correction->clock_in;
+            $attendance->clock_out = $correction->clock_out;
+            $attendance->breakTimes = $correction->correctionBreakTimes;
+        }
+
         return view('attendance.detail', [
             'attendance' => $attendance,
             'name' => $name,
             'work_year' => $work_year,
             'work_month_day' => $work_month_day,
             'status' => $status,
+            'correction' => $correction,
         ]);
     }
 

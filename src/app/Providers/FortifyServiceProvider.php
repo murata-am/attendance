@@ -10,8 +10,12 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Fortify;
+
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -36,6 +40,25 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::loginView(function () {
             return view('auth.login');
+        });
+
+        Fortify::authenticateUsing(function ($request) {
+            $user = User::where('email', $request->email)->first();
+
+            $isAdminRoute = $request->is('admin/*');
+
+            if (
+                $user &&
+                \Hash::check($request->password, $user->password) &&
+                (
+                    ($isAdminRoute && $user->role === 'admin') ||
+                    (!$isAdminRoute && $user->role === 'user')
+                )
+            ) {
+                return $user;
+            }
+
+            return null;
         });
 
         RateLimiter::for('login', function (Request $request) {

@@ -1,19 +1,19 @@
 @extends('layouts/app')
 
 @section('css')
-    <link rel="stylesheet" href={{ asset("css/correction-list.css") }}>
+    <link rel="stylesheet" href={{ asset('css/correction_list.css') }}>
 @endsection
 
 @section('content')
     <div class="list-content">
-        <h1>修正申請一覧</h1>
+        <h1 class="list-title">申請一覧</h1>
 
-        <div href="request-tab">
+        <div class="request-tab">
             <a href="{{ route('stamp_correction_request.list', ['tab' => 'unapproved', 'query' => request('query')]) }}" class="{{ ($tab ?? 'unapproved') === 'unapproved' ? 'active' : '' }}">
             承認待ち
             </a>
 
-            <a href="{{ route('stamp_correction_request.list', ['tab' => 'unapproved', 'query' => request('query')]) }}"
+            <a href="{{ route('stamp_correction_request.list', ['tab' => 'approved', 'query' => request('query')]) }}"
                 class="{{ $tab === 'approved' ? 'active' : '' }}">
             承認済み
             </a>
@@ -32,17 +32,26 @@
                     </tr>
                 </thead>
 
-                @foreach ($attendanceRequests as $attendanceRequest)
-                <tr>
-                    <th>{{ $status }}</th>
-                    <th>{{ $name }}</th>
-                    <th>{{ $work_date }}</th>
-                    <th></th>
-                    <th>{{ $reason }}</th>
-                    <th>
-                        <a href="{{ route('attendance.edit') }}">詳細</a>
-                    </th>
-                </tr>
+                @foreach ($correctionRequests as $correctionRequest)
+                    <tr>
+                        <th>
+                            @php
+                                $statusMap = [
+                                    'pending' => '承認待ち',
+                                    'approved' => '承認済み',
+                                ];
+                                $statusValue = $correctionRequest->approval->status ?? null;
+                            @endphp
+                            {{ $statusMap[$statusValue] ?? '申請なし' }}
+                        </th>
+                        <th>{{ $correctionRequest->user->name ?? '名前なし' }}</th>
+                        <th>{{ \Carbon\Carbon::parse($correctionRequest->attendance->work_date)->format('Y/m/d') ?? '日付なし' }}</th>
+                        <th>{{ $correctionRequest->reason ?? '理由なし' }}</th>
+                        <th>{{ $correctionRequest->created_at->format('Y/m/d') }}</th>
+                        <th>
+                            <a href="{{ route('attendance.edit', ['id' => $correctionRequest->attendance->id ?? 0]) }}" class="detail_link">詳細</a>
+                        </th>
+                    </tr>
                 @endforeach
             </table>
 
