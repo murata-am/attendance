@@ -17,11 +17,6 @@
     text-align: justify;
 }
 
-input[type="time"]::-webkit-calendar-picker-indicator {
-    display: none;
-    -webkit-appearance: none;
-}
-
 .detail_table {
     background-color: #FFFFFF;
     border-collapse: collapse;
@@ -38,66 +33,31 @@ table tr {
 
 .detail_table th,
 .detail_table td {
-    padding: 20px 35px;
+    padding: 28px 40px;
 }
 
-.error-th {
-    padding: 0 auto;
+.reason {
+    justify-content: flex-start;
+    padding-left: 10px;
 }
-
-.correction-status{
+.approved-status {
     display: flex;
     justify-content: flex-end;
-    margin-top: 12px;
+    margin-top: 20px;
 }
 
-.correction-btn {
-    color: #FFFFFF;
-    background-color: #000;
+.approved {
+    padding: 5px 15px;
+    border-style: solid 1px #737373;
     border-radius: 5px;
-    padding: 5px 25px;
-}
-
-.correction-btn:hover {
-    background-color: #3f3e3e;
-}
-
-
-
-.approved-comment {
-    color: red;
-}
-
-input {
-    padding: 3px 22px ;
-}
-
-.reason-textarea {
-    width: 98%;
-    height: 80px;
-    box-sizing: border-box;
-    resize: vertical;
-    padding: 6px;
-}
-
-.reason-left {
-    text-align: left;
-}
-
-
-.error__message {
-    color: red;
-    font-size: 15px;
-    margin-top: 4px;
-    display: block;
-    text-align: left;
-    max-width: 50%;
+    background-color: #737373;
+    color: #FFFFFF;
 }
 
 
 @media (min-width: 1400px) and (max-width: 1540px) {
     .detail_container {
-        width: 70%;
+        width: 60%;
     }
 
     .title {
@@ -108,16 +68,6 @@ input {
     .detail_table td {
         padding: 30px 50px;
         font-size: 18px;
-    }
-
-    input,
-    .reason-textarea {
-        font-size: 16px;
-    }
-
-    .correction-btn {
-        font-size: 18px;
-        padding: 10px 40px;
     }
 }
 
@@ -138,13 +88,4 @@ input {
         font-size: 14px;
     }
 
-    input,
-    .reason-textarea {
-        font-size: 14px;
-    }
-
-    .correction-btn {
-        font-size: 14px;
-        padding: 5px 20px;
-    }
 }

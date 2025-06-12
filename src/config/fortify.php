@@ -77,7 +77,7 @@ return [
     'home' => RouteServiceProvider::HOME,
 
     'redirects' => [
-        'logout' => '/login', // ログアウト後に /login へリダイレクト
+        'logout' => '/login',
     ],
 
     /*

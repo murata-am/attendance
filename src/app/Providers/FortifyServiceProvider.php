@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Fortify;
 
 
+
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -24,7 +25,6 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
     }
 
     /**
@@ -65,6 +65,8 @@ class FortifyServiceProvider extends ServiceProvider
             $email = (string) $request->email;
             return Limit::perMinute(10)->by($email . $request->ip());
         });
+
+        Fortify::ignoreRoutes();
 
     }
 }

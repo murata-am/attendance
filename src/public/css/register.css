@@ -45,3 +45,39 @@ input {
     text-decoration: none;
     color: #0073CC;
 }
+
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .register__content {
+        width: 40%;
+        font-size: 18px;
+    }
+
+    input {
+        height: 45px;
+        font-size: 16px;
+    }
+
+    .register-btn {
+        height: 45px;
+        font-size: 20px;
+    }
+
+}
+
+@media (min-width: 768px) and (max-width: 850px) {
+    .register__content {
+        width: 80%;
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    input {
+        height: 38px;
+        font-size: 15px;
+    }
+
+    .register-btn {
+        height: 40px;
+        font-size: 18px;
+    }
+}

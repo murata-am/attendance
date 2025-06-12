@@ -1,0 +1,42 @@
+.staff_container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.title {
+    border-left: 8px solid #000;
+    text-align: left;
+    margin: 50px auto;
+    padding-left: 10px;
+}
+
+.staff_table {
+    width: 100%;
+    background-color: #FFFFFF;
+    border-collapse: collapse;
+    color: #737373;
+
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+table tr{
+    border: solid 3px rgb(237, 237, 237);
+}
+
+thead tr {
+    border-bottom: solid 5px rgb(237, 237, 237);
+
+}
+
+thead th {
+    padding: 10px 10px;
+}
+
+tbody th {
+    padding: 10px 10px;
+}

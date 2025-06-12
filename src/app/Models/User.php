@@ -61,4 +61,9 @@ class User extends Authenticatable
         return $this->hasMany(CorrectionApproval::class, 'approved_by');
     }
 
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
 }

@@ -68,3 +68,42 @@
     background-color: #dedbdb;
 }
 
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .date {
+        font-size: 36px;
+    }
+
+    .time {
+        font-size: 70px;
+    }
+
+    .status_btn button {
+        font-size: 28px;
+        padding: 12px 60px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 850px) {
+    .attendance_content {
+        margin: 50px auto;
+    }
+
+    .status {
+        font-size: 10px;
+        padding: 5px 12px;
+    }
+
+    .date {
+        font-size: 26px;
+    }
+
+    .time {
+        font-size: 48px;
+    }
+
+    .status_btn button {
+        font-size: 20px;
+        padding: 10px 30px;
+    }
+}
+

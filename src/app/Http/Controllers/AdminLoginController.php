@@ -18,9 +18,10 @@ class AdminLoginController extends Controller
             ->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            Auth::login($user);
+            Auth::guard('admin')->login($user);
             $request->session()->regenerate();
-            return redirect()->intended('/admin/welcome');
+
+            return redirect('/admin/attendance/list');
         }
 
         return back()->withErrors([

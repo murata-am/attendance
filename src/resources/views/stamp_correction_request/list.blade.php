@@ -9,11 +9,11 @@
         <h1 class="list-title">申請一覧</h1>
 
         <div class="request-tab">
-            <a href="{{ route('stamp_correction_request.list', ['tab' => 'unapproved', 'query' => request('query')]) }}" class="{{ ($tab ?? 'unapproved') === 'unapproved' ? 'active' : '' }}">
+            <a href="{{ route(Route::currentRouteName(),  ['tab' => 'unapproved']) }}" class="{{ ($tab ?? 'unapproved') === 'unapproved' ? 'active' : '' }}">
             承認待ち
             </a>
 
-            <a href="{{ route('stamp_correction_request.list', ['tab' => 'approved', 'query' => request('query')]) }}"
+            <a href="{{ route(Route::currentRouteName(), ['tab' => 'approved']) }}"
                 class="{{ $tab === 'approved' ? 'active' : '' }}">
             承認済み
             </a>
@@ -49,7 +49,11 @@
                         <th>{{ $correctionRequest->reason ?? '理由なし' }}</th>
                         <th>{{ $correctionRequest->created_at->format('Y/m/d') }}</th>
                         <th>
+                        @if (($correctionRequest->approval->status ?? '') === 'approved')
+                            <a href="{{ route('stamp_correction_request.showApproved', ['id' => $correctionRequest->id]) }}" class="detail_link">詳細</a>
+                        @else
                             <a href="{{ route('attendance.edit', ['id' => $correctionRequest->attendance->id ?? 0]) }}" class="detail_link">詳細</a>
+                        @endif
                         </th>
                     </tr>
                 @endforeach
