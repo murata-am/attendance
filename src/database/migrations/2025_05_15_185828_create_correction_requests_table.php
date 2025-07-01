@@ -33,6 +33,11 @@ class CreateCorrectionRequestsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Schema::dropIfExists('correction_approvals');
         Schema::dropIfExists('correction_requests');
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

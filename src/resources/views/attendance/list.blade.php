@@ -9,6 +9,11 @@
         <h2 class="title">勤怠一覧</h2>
 
         <div class="month-nav">
+            @php
+                $nextMonthCarbon = \Carbon\Carbon::createFromDate($nextMonth['year'], $nextMonth['month'], 1);
+                $currentMonthCarbon = \Carbon\Carbon::now()->startOfMonth();
+            @endphp
+
             <a href="{{ route('attendance.list', ['year' => $prevMonth['year'], 'month' => $prevMonth['month']]) }}"
                 class="prev-month">← 前月</a>
 
@@ -17,8 +22,13 @@
                 <span class="this-month"> {{ $year }}/{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}</span>
             </div>
 
-            <a href="{{ route('attendance.list', ['year' => $nextMonth['year'], 'month' => $nextMonth['month']]) }}"
+            @if ($nextMonthCarbon->lt($currentMonthCarbon->addMonth()))
+                <a href="{{ route('attendance.list', ['year' => $nextMonth['year'], 'month' => $nextMonth['month']]) }}"
                 class="next-month">翌月 →</a>
+            @else
+                <span class="next-month">翌月 →</span>
+            @endif
+
         </div>
 
         <table class="attendance-table">
@@ -36,17 +46,17 @@
                 <tr>
                     <td>{{ $dateInfo['display'] }}</td>
                     @php
-                        $attendance = $attendances[$dateInfo['carbon']->toDateString()] ?? null;
+    $attendance = $attendances[$dateInfo['carbon']->toDateString()] ?? null;
                     @endphp
                     <td>{{ $attendance->clock_in_formatted ?? '' }}</td>
                     <td>{{ $attendance->clock_out_formatted ?? '' }}</td>
                     <td>
                         @if (isset($attendance))
                             @php
-                                $breakHours = floor($attendance->total_break_minutes / 60);
-                                $breakMinutes = $attendance->total_break_minutes % 60;
+        $breakHours = floor($attendance->total_break_minutes / 60);
+        $breakMinutes = $attendance->total_break_minutes % 60;
                             @endphp
-                            {{ sprintf('%d:%02d', $breakHours, $breakMinutes) }}
+                            {{ sprintf('%02d:%02d', $breakHours, $breakMinutes) }}
                         @else
 
                         @endif
@@ -54,10 +64,10 @@
                     <td>
                         @if (isset($attendance))
                             @php
-                                $workHours = floor($attendance->total_work_minutes / 60);
-                                $workMinutes = $attendance->total_work_minutes % 60;
+        $workHours = floor($attendance->total_work_minutes / 60);
+        $workMinutes = $attendance->total_work_minutes % 60;
                             @endphp
-                            {{ sprintf('%d:%02d', $workHours, $workMinutes) }}
+                            {{ sprintf('%02d:%02d', $workHours, $workMinutes) }}
                         @else
 
                         @endif
@@ -69,6 +79,8 @@
                             @else
                                 <a href="{{ route('attendance.edit', $attendance->id) }}" class="detail_link">詳細</a>
                             @endif
+                        @else
+                            <span class="detail_link">詳細</span>
                         @endif
                     </td>
                 </tr>

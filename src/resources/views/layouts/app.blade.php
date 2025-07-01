@@ -16,8 +16,8 @@
                 <ul class="nav_link">
                     @if(!in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice', 'admin.login']))
                         @php
-                            $user = Auth::guard('admin')->check() ? Auth::guard('admin')->user() : Auth::user();
-                            $isAdmin = Auth::user() && Auth::user()->role === 'admin';
+                            $isAdmin = Auth::guard('admin')->check();
+                            $user = $isAdmin ? Auth::guard('admin')->user() : Auth::user();
                         @endphp
 
                         @if ($isAdmin)
@@ -31,7 +31,7 @@
                                 <li><a href="/attendance" class="nav">勤怠</a></li>
                                 <li><a href="/attendance/list" class="nav">勤怠一覧</a></li>
                             @endif
-                            <li><a href="{{ route('stamp_correction_request.list') }}" class="nav">申請一覧</a></li>
+                            <li><a href="{{ route('correction.request.list') }}" class="nav">申請一覧</a></li>
                         @endif
                         <li>
                             <form action="{{ route('custom.logout') }}" method="post">

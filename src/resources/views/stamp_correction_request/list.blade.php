@@ -49,20 +49,15 @@
                         <th>{{ $correctionRequest->reason ?? '理由なし' }}</th>
                         <th>{{ $correctionRequest->created_at->format('Y/m/d') }}</th>
                         <th>
-                        @if (($correctionRequest->approval->status ?? '') === 'approved')
-                            <a href="{{ route('stamp_correction_request.showApproved', ['id' => $correctionRequest->id]) }}" class="detail_link">詳細</a>
+                        @if (Auth::guard('admin')->check())
+                            <a href="{{ route('admin.correction.approve.show', ['attendance_correct_request' => $correctionRequest]) }}" class="detail_link">詳細</a>
                         @else
-                            <a href="{{ route('attendance.edit', ['id' => $correctionRequest->attendance->id ?? 0]) }}" class="detail_link">詳細</a>
+                            <a href="{{ route('attendance.edit',  ['id' => $correctionRequest->attendance->id, 'from' => 'approved_list']) }}" class="detail_link">詳細</a>
                         @endif
                         </th>
                     </tr>
                 @endforeach
             </table>
-
         </div>
     </div>
-
-
-
-
 @endsection

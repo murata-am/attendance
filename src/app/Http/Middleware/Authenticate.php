@@ -15,7 +15,12 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (!$request->expectsJson()) {
-            if ($request->is('admin/*')) {
+            \Log::debug('Redirecting due to unauthenticated request', [
+                'path' => $request->path(),
+                'guard' => 'admin',
+            ]);
+
+            if (str_starts_with($request->path(), 'admin')) {
                 return route('admin.login');
             }
 

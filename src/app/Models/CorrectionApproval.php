@@ -20,4 +20,9 @@ class CorrectionApproval extends Model
     {
         return $this->belongsTo(CorrectionRequest::class);
     }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class, 'approved_by');
+    }
 }

@@ -20,9 +20,9 @@ class CreateAttendancesTable extends Migration
             $table->date('work_date')->nullable();
             $table->time('clock_in')->nullable();
             $table->time('clock_out')->nullable();
+            $table->string('reason')->nullable();
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->nullable();
-
             $table->unique(['user_id', 'work_date']);
         });
     }

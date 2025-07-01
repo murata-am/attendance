@@ -45,16 +45,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function ($request) {
             $user = User::where('email', $request->email)->first();
 
-            $isAdminRoute = $request->is('admin/*');
-
-            if (
-                $user &&
-                \Hash::check($request->password, $user->password) &&
-                (
-                    ($isAdminRoute && $user->role === 'admin') ||
-                    (!$isAdminRoute && $user->role === 'user')
-                )
-            ) {
+            if ($user && \Hash::check($request->password, $user->password)) {
                 return $user;
             }
 

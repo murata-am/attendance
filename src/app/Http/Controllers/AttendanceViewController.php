@@ -115,12 +115,10 @@ class AttendanceViewController extends Controller
 
         $status = optional(optional($attendance->correctionRequest)->approval)->status;
 
-        $correction = null;
+        $correction = $attendance->correctionRequest;
 
         if ($status === 'pending' && $attendance->correctionRequest) {
             $correction = $attendance->correctionRequest;
-
-            // attendanceの代わりにcorrectionRequestの値を使うように一部上書き
             $attendance->clock_in = $correction->clock_in;
             $attendance->clock_out = $correction->clock_out;
             $attendance->breakTimes = $correction->correctionBreakTimes;
@@ -173,8 +171,6 @@ class AttendanceViewController extends Controller
             }
         }
 
-        return redirect()->route('stamp_correction_request.list')->with('success', '修正申請を送信しました');
-
+        return redirect()->route('correction.request.list')->with('success', '修正申請を送信しました');
     }
-
 }

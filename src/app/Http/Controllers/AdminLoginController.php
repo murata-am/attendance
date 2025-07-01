@@ -13,14 +13,10 @@ class AdminLoginController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)
-            ->where('role', 'admin')
-            ->first();
+        $credentials = $request->only('email', 'password');
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            Auth::guard('admin')->login($user);
+        if(Auth::guard('admin')->attempt($credentials)){
             $request->session()->regenerate();
-
             return redirect('/admin/attendance/list');
         }
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\CorrectionRequestController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\CorrectionApproveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,28 +37,30 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/attendance/detail/{id}', [AttendanceViewController::class, 'edit'])->name('attendance.edit');
     Route::post('/attendance/detail/{id}', [AttendanceViewController::class, 'store'])->name('attendance.store');
 
-    Route::get('/stamp_correction_request/list', [CorrectionRequestController::class, 'index'])->name('stamp_correction_request.list');
-    Route::get('/stamp_correction_request/{id}/approved', [CorrectionRequestController::class, 'showApproved'])->name('stamp_correction_request.showApproved');
+    Route::get('/stamp_correction_request/list', [CorrectionRequestController::class, 'index'])->name('correction.request.list');
+    Route::get('/stamp_correction_request/approved/{attendance_correct_request}', [CorrectionApproveController::class, 'show'])->name('stamp_correction_request.approved');
 });
 
 
 Route::get('/admin/login', function () {
-    return view('admin.auth.login');
-})->name('admin.login');
-
+    return view('admin.auth.login');})->name('admin.login');
 Route::post('/admin/login', [AdminLoginController::class, 'login']);
 
 Route::post('/custom-logout', [LogoutController::class, 'logout'])->name('custom.logout');
 
-Route::middleware(['auth:admin', 'admin.session'])->prefix('admin')->group(function () {
+Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.attendance.list');
 
     Route::get('/attendance/detail/{id}', [AdminAttendanceController::class, 'show'])->name('admin.attendance.show');
     Route::post('/attendance/detail/{id}', [AdminAttendanceController::class, 'update'])->name('admin.attendance.update');
-    Route::get('/stamp_correction_request/{id}/approved', [CorrectionRequestController::class, 'showApproved'])->name('stamp_correction_request.showApproved');
 
     Route::get('/staff/list', [StaffController::class, 'index'])->name('staff.list');
+    Route::get('/attendance/staff/{userId}', [StaffController::class, 'show'])->name('attendance.staff.list');
+
+    Route::post('/admin/attendance/csv', [StaffController::class, 'export'])->name('admin.attendance.csv');
 
     Route::get('/stamp_correction_request/list', [CorrectionRequestController::class, 'index'])->name('admin.stamp_correction_request.list');
 
+    Route::get('/stamp_correction_request/approve/{attendance_correct_request}',  [CorrectionApproveController::class, 'show'])->name('admin.correction.approve.show');
+    Route::post('/stamp_correction_request/approve/{attendance_correct_request}', [CorrectionApproveController::class, 'approve'])->name('correction.approve.update');
 });

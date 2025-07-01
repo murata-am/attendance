@@ -23,7 +23,7 @@
                     <th>{{ $user->name }}</th>
                     <th>{{ $user->email }}</th>
                     <th>
-                        <a href="{{ route('attendance.list', ['user_id'=>$user->id]) }}">詳細</a>
+                        <a href="{{ route('attendance.staff.list', ['userId'=>$user->id]) }}" class="staff-attendance-link">詳細</a>
                     </th>
                 </tr>
             @endforeach

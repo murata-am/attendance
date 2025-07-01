@@ -86,7 +86,7 @@ class AdminAttendanceController extends Controller
             $attendance->breakTimes = $correction->correctionBreakTimes;
         }
 
-        return view('attendance.detail', [
+        return view('admin.attendance.detail', [
             'attendance' => $attendance,
             'name' => $name,
             'work_year' => $work_year,
@@ -100,10 +100,28 @@ class AdminAttendanceController extends Controller
     public function update(AttendanceRequest $request, $id)
     {
         $data = $request->all();
-        $attendance = Attendance::findOrFail($id);
+        $attendance = Attendance::with('user', 'breakTimes')->findOrFail($id);
 
-        $attendance->update($data);
+        $attendance->update([
+            'clock_in' => $data['clock_in'],
+            'clock_out' => $data['clock_out'],
+            'reason' => $data['reason'],
 
+        ]);
+
+        $breakStarts = $request->input('break_start', []);
+        $breakEnds = $request->input('break_end', []);
+
+        $attendance->breakTimes()->delete();
+
+        for ($i = 0; $i < count($breakStarts); $i++) {
+            if (!empty($breakStarts[$i]) && !empty($breakEnds[$i])) {
+                $attendance->breakTimes()->create([
+                    'break_start' => $breakStarts[$i],
+                    'break_end' => $breakEnds[$i],
+                ]);
+            }
+        }
         return redirect()->route('admin.attendance.show', $id)->with('success', '勤怠情報を更新しました');
 
     }

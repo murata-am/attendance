@@ -14,9 +14,26 @@
 .staff_table {
     width: 100%;
     background-color: #FFFFFF;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
     color: #737373;
 
+}
+
+.staff_table thead th {
+    font-weight: bold;
+    background-color: #fff;
+    color: #737373;
+    border-bottom: 3px solid #ddd;
+}
+
+.staff_table tbody th {
+    background-color: #fff;
+    border-bottom: 2px solid #ddd;
+    font-weight: bold;
+    color: #737373;
 }
 
 table {
@@ -39,4 +56,24 @@ thead th {
 
 tbody th {
     padding: 10px 10px;
+}
+
+.staff-attendance-link {
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+}
+
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .staff_container {
+        max-width: 1000px;
+    }
+
+}
+
+@media (min-width: 768px) and (max-width: 850px) {
+    .staff_container {
+        max-width: 600px;
+    }
+
 }

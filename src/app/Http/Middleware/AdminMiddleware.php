@@ -18,10 +18,9 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::guard('admin')->check() || !Auth::guard('admin')->user()->isAdmin()) {
-            return redirect()->route('admin.login')->with('error', '管理者専用ページです');
+        if (!Auth::guard('admin')->check()) {
+            return redirect()->route('admin.login');
         }
-
         return $next($request);
     }
 }

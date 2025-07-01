@@ -49,8 +49,23 @@
 .attendance-table {
     width: 100%;
     background-color: #FFFFFF;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
     color: #737373;
+}
+
+.attendance-table thead th {
+    font-weight: bold;
+    background-color: #fff;
+    color: #444;
+    border-bottom: 3px solid #ddd;
+}
+
+.attendance-table tbody td {
+    background-color: #fff;
+    border-bottom: 2px solid #ddd;
 }
 
 .attendance-table thead tr:first-child th:first-child {
@@ -89,6 +104,7 @@ tbody td {
 .detail_link {
     text-decoration: none;
     color: #000000;
+    font-weight: bold;
 }
 
 @media (min-width: 1400px) and (max-width: 1540px) {
@@ -136,3 +152,4 @@ tbody td {
         padding: 8px;
         font-size: 14px;
     }
+}

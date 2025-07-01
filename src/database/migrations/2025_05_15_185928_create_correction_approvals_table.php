@@ -17,7 +17,7 @@ class CreateCorrectionApprovalsTable extends Migration
             $table->id();
             $table->foreignId('correction_request_id')->constrained()->cascadeOnDelete();
             $table->enum('status', ['pending', 'approved'])->default('pending');
-            $table->foreignId('approved_by')->nullable();
+            $table->foreignId('approved_by')->nullable()->constrained('admins')->onDelete('set null');
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrent()->nullable();
