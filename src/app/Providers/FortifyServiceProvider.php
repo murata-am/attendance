@@ -15,6 +15,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Event;
 
 
 
@@ -37,6 +40,8 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::registerView(function () {
             return view('auth.register');
         });
+
+        Fortify::verifyEmailView(fn() => view('auth.verify-email'));
 
         Fortify::loginView(function () {
             return view('auth.login');

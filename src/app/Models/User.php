@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Attendance;
 use App\Models\CorrectionRequest;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -60,9 +60,5 @@ class User extends Authenticatable
         return $this->hasMany(CorrectionApproval::class, 'approved_by');
     }
 
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
 
 }

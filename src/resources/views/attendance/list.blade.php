@@ -37,7 +37,7 @@
                     <th>日付</th>
                     <th>出勤</th>
                     <th>退勤</th>
-                    <th>休息</th>
+                    <th>休憩</th>
                     <th>合計</th>
                     <th>詳細</th>
                 </tr>

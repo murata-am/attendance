@@ -24,7 +24,27 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 .detail_table {
     background-color: #FFFFFF;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+
+.detail_table tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.detail_table tr:first-child td:last-child {
+    border-top-right-radius: 10px;
+}
+
+.detail_table tr:last-child th:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.detail_table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
 }
 
 table {
@@ -34,23 +54,34 @@ table {
 }
 
 table tr {
-    border: solid 3px rgb(237, 237, 237);
+    border: none;
 }
+
 
 .detail_table th {
     padding: 20px 35px;
     text-align: left;
     font-weight: bold;
+    border-bottom: solid 3px #E1E1E1;
 }
 
 .detail_table td{
     padding: 20px 35px;
     text-align: center;
     font-weight: bold;
+    border-bottom: solid 3px #E1E1E1;
 }
+
+
 
 .detail_table th.error-th {
     padding-top: 30px;
+}
+
+.static-row td,
+.static-row th {
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
 
 .correction-status {
@@ -75,7 +106,7 @@ table tr {
 }
 
 input {
-    padding: 3px 22px;
+    padding: 5px 28px;
 }
 
 .reason-textarea {
@@ -88,6 +119,7 @@ input {
 
 .reason-left {
     text-align: left;
+    padding-left: 15px;
 }
 
 .error-td {
@@ -115,6 +147,8 @@ input {
     text-align: left;
     white-space: nowrap;
 }
+
+
 
 
 @media (min-width: 1400px) and (max-width: 1540px) {

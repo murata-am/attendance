@@ -35,7 +35,13 @@
 
             @foreach ($correction->correctionBreakTimes as $i => $break)
                 <tr>
-                    <th class="row-name">休憩{{ $i + 1 }}</th>
+                    <th class="row-name">
+                        @if ($i === 0)
+                            休憩
+                        @else
+                            休憩{{ $i + 1 }}
+                        @endif
+                    </th>
                     <td>{{ \Carbon\Carbon::parse($break->corrected_break_start)->format('H:i') }}</td>
                     <td>～</td>
                     <td>{{ \Carbon\Carbon::parse($break->corrected_break_end)->format('H:i') }}</td>

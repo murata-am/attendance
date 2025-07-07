@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\CorrectionRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class CorrectionApproveController extends Controller
 {
@@ -39,17 +39,14 @@ class CorrectionApproveController extends Controller
     public function approve(CorrectionRequest $attendance_correct_request)
     {
         DB::transaction(function () use ($attendance_correct_request) {
-            // 勤怠本体を更新
             $attendance = $attendance_correct_request->attendance;
             $attendance->clock_in = $attendance_correct_request->corrected_clock_in;
             $attendance->clock_out = $attendance_correct_request->corrected_clock_out;
             $attendance->reason = $attendance_correct_request->reason;
             $attendance->save();
-    
-            // 休憩データを一旦削除
+
             $attendance->breakTimes()->delete();
-    
-            // 修正された休憩を本体にコピー
+
             foreach ($attendance_correct_request->correctionBreakTimes as $correctedBreak) {
                 $attendance->breakTimes()->create([
                     'break_start' => $correctedBreak->corrected_break_start,
@@ -57,8 +54,11 @@ class CorrectionApproveController extends Controller
                 ]);
             }
 
-            // ステータスを approved に更新
+            $attendance->load('breakTimes');
+
             $attendance_correct_request->approval->status = 'approved';
+            $attendance_correct_request->approval->approved_by = Auth::id();
+            $attendance_correct_request->approval->approved_at = Carbon::now();
             $attendance_correct_request->approval->save();
         });
 

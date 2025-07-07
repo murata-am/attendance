@@ -47,7 +47,7 @@ class AttendanceViewController extends Controller
             $weekday = $weekName[$date->dayOfWeek];
             $dates[] = [
                 'carbon' => $date->copy(),
-                'display' => $date->format("m/d") ."(" . $weekday . ") "
+                'display' => $date->format("m/d") . "(" . $weekday . ") "
             ];
         }
 
@@ -117,6 +117,8 @@ class AttendanceViewController extends Controller
 
         $correction = $attendance->correctionRequest;
 
+        $from = request()->get('from');
+
         if ($status === 'pending' && $attendance->correctionRequest) {
             $correction = $attendance->correctionRequest;
             $attendance->clock_in = $correction->clock_in;
@@ -124,14 +126,25 @@ class AttendanceViewController extends Controller
             $attendance->breakTimes = $correction->correctionBreakTimes;
         }
 
-        return view('attendance.detail', [
-            'attendance' => $attendance,
-            'name' => $name,
-            'work_year' => $work_year,
-            'work_month_day' => $work_month_day,
-            'status' => $status,
-            'correction' => $correction,
-        ]);
+        if ($status === 'approved') {
+            if ($from === 'approved_list') {
+                // 修正申請一覧（編集不可）→ 修正内容を表示
+                $breakTimes = optional($correction)->correctionBreakTimes ?? collect();
+            } else {
+                // 勤怠一覧（編集可能）→ 承認済みなので更新後の勤怠データを使用
+                $breakTimes = $attendance->breakTimes;
+            }
+        } elseif ($status === 'pending') {
+            // 承認前 → 修正申請中のデータを表示（編集不可）
+            $breakTimes = optional($correction)->correctionBreakTimes ?? collect();
+        } else {
+            // 通常の勤怠入力（編集可能）
+            $breakTimes = $attendance->breakTimes;
+        }
+
+        return view('attendance.detail', compact(
+            'attendance', 'name', 'work_year', 'work_month_day', 'status', 'correction', 'breakTimes'
+        ));
     }
 
     public function store(AttendanceRequest $request, $id)
@@ -162,7 +175,7 @@ class AttendanceViewController extends Controller
 
         foreach ($breakStarts as $index => $start) {
             $end = $breakEnds[$index] ?? null;
-            if($start && $end){
+            if ($start && $end) {
                 CorrectionBreakTime::create([
                     'correction_request_id' => $correctionRequest->id,
                     'corrected_break_start' => $start,

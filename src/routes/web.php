@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\StaffController;
 use App\Models\CorrectionRequest;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceViewController;
@@ -22,9 +24,26 @@ use App\Http\Controllers\CorrectionApproveController;
 |
 */
 
-// 後でミドルウェアのauth横に'verified'を付け加える
+// メール認証のルート
+Route::get('/email/verify', function () {
+    return view('auth.verify-email'); // このファイルを自分で作る
+})->middleware('auth')->name('verification.notice');
 
-Route::middleware(['auth'])->group(function () {
+// メール内のリンクがアクセスされたとき
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill(); // ユーザーを認証済みにする
+    return redirect('/attendance'); // 好きな場所に変更可能
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+// 再送信用
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', '確認メールを再送しました。');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+
     Route::get('/attendance', [AttendanceController::class, 'index']);
 
     Route::post('/attendance/clockIn', [AttendanceController::class, 'storeClockIn'])->name('attendance.clockIn');
