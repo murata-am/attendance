@@ -51,7 +51,11 @@ https://mailtrap.io/
 メールボックスのIntegrationsから 「laravel 7.x and 8.x」を選択して  
 .envファイルのMAIL_MAILERからMAIL_ENCRYPTIONまでの項目をコピー＆ペーストしてください。  
 加えてペーストしたPasswordが***で隠れている場合は、CredentialsにあるPasswordをコピーして貼り付けなおしてください。   
-MAIL_FROM_ADDRESSは任意のメールアドレスを入力してください。 
+MAIL_FROM_ADDRESSは任意のメールアドレスを入力してください。  
+.envファイルにコピー＆ペーストした後は、以下を実行してください。
+```bash
+php artisan config:clear
+```
 
 ## テストアカウント
 ### 管理者ユーザー
