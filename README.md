@@ -21,8 +21,11 @@
  DB_USERNAME=laravel_user　　
  DB_PASSWORD=laravel_pass
 ```
- ※権限エラーが出る可能性もあるので、その場合は次のコマンドを行う ->sudo chmod 644 .env
-
+ ※環境構築の際、権限エラーが出た場合は次のコマンドなど
+ 読み取り可能にできるものをお願いします。
+ ```bash
+ chmod 664 .env
+```
 
 6. アプリケーションキーの作成
    php artisan key:generate
@@ -46,8 +49,9 @@ mailtrapというツールを使用しています。
 https://mailtrap.io/
 
 メールボックスのIntegrationsから 「laravel 7.x and 8.x」を選択して  
-.envファイルのMAIL_MAILERからMAIL_ENCRYPTIONまでの項目をコピー＆ペーストしてください  
-MAIL_FROM_ADDRESSは任意のメールアドレスを入力してください  
+.envファイルのMAIL_MAILERからMAIL_ENCRYPTIONまでの項目をコピー＆ペーストしてください。  
+加えてペーストしたPasswordが***で隠れている場合は、CredentialsにあるPasswordをコピーして貼り付けなおしてください。   
+MAIL_FROM_ADDRESSは任意のメールアドレスを入力してください。 
 
 ## テストアカウント
 ### 管理者ユーザー
