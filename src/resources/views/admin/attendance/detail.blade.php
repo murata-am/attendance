@@ -33,6 +33,8 @@
                 <td>
                     @if (empty($status) || $status === 'approved')
                         <input type="time" name="clock_in" value="{{ old('clock_in',\Carbon\Carbon::parse($attendance->clock_in)->format('H:i')) }}">
+                    @elseif($status === 'pending')
+                        {{ \Carbon\Carbon::parse($correction->corrected_clock_in)->format('H:i') }}
                     @else
                         {{ \Carbon\Carbon::parse($correction->corrected_clock_in)->format('H:i') }}
                     @endif
@@ -57,9 +59,13 @@
                 <td>
                     @if (empty($status) || $status === 'approved')
                         <input type="time" name="clock_out" value="{{ old('clock_out', \Carbon\Carbon::parse($attendance->clock_out)->format('H:i')) }}">
+                    @elseif($status === 'pending')
+                        {{ \Carbon\Carbon::parse($correction->corrected_clock_out)->format('H:i') }}
                     @else
                         {{ \Carbon\Carbon::parse($correction->corrected_clock_out)->format('H:i') }}
                     @endif
+
+                    
 
                     <div class="error__message">
                         @error('clock_out')
@@ -77,7 +83,7 @@
             @foreach ($breakTimes ?? [] as $i => $break)
                 <tr>
                     <th class="row-name">
-                        @if ($i === 0)
+                        @if ($i == 0)
                             休憩
                         @else
                             休憩{{ $i + 1 }}
@@ -122,7 +128,13 @@
 
             @if (empty($status) || $status === 'approved')
                 <tr>
-                    <th class="row-name">休憩{{ $nextIndex + 1 }}</th>
+                    <th class="row-name">
+                        @if ($nextIndex == 0)
+                            休憩
+                        @else
+                            休憩{{ $nextIndex + 1 }}
+                        @endif
+                        </th>
                     <td>
                         <input type="time" name="break_start[]" value="{{ old('break_start.' . $nextIndex) }}">
                     </td>

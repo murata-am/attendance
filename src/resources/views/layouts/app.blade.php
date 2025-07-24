@@ -17,7 +17,6 @@
                     @if(!in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice', 'admin.login']))
                         @php
                             $isAdmin = Auth::guard('admin')->check();
-                            $user = $isAdmin ? Auth::guard('admin')->user() : Auth::user();
                         @endphp
 
                         @if ($isAdmin)
@@ -27,11 +26,12 @@
                         @else
                             @if (($statusKey ?? '') === 'finished_work')
                                 <li><a href="/attendance/list" class="nav">今月の出勤一覧</a></li>
+                                <li><a href="{{ route('correction.request.list') }}" class="nav">申請一覧</a></li>
                             @else
                                 <li><a href="/attendance" class="nav">勤怠</a></li>
                                 <li><a href="/attendance/list" class="nav">勤怠一覧</a></li>
+                                <li><a href="{{ route('correction.request.list') }}" class="nav">申請</a></li>
                             @endif
-                            <li><a href="{{ route('correction.request.list') }}" class="nav">申請一覧</a></li>
                         @endif
                         <li>
                             <form action="{{ route('custom.logout') }}" method="post">

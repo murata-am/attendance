@@ -4,6 +4,7 @@ use App\Http\Controllers\StaffController;
 use App\Models\CorrectionRequest;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceViewController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\CorrectionApproveController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 // メール認証のルート
 Route::get('/email/verify', function () {
@@ -53,7 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/attendance/list', [AttendanceViewController::class, 'index'])->name('attendance.list');
 
-    Route::get('/attendance/detail/{id}', [AttendanceViewController::class, 'edit'])->name('attendance.edit');
+    Route::get('/attendance/detail/{attendance_id}/{correction_request_id?}', [AttendanceViewController::class, 'edit'])->name('attendance.edit');
     Route::post('/attendance/detail/{id}', [AttendanceViewController::class, 'store'])->name('attendance.store');
 
     Route::get('/stamp_correction_request/list', [CorrectionRequestController::class, 'index'])->name('correction.request.list');

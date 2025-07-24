@@ -5,7 +5,7 @@
 @endsection
 @section('content')
     <div class="content-container">
-        <div>登録していただいたメールアドレスに確認メールを送付しました。<br>
+        <div>登録していただいたメールアドレスに認証メールを送付しました。<br>
         メール認証を完了してください。</div>
 
         <a href="https://mailtrap.io/" target="_blank" class="mailtrap-link">認証はこちらから

@@ -8,12 +8,17 @@
     <div class="list-content">
         <h1 class="list-title">申請一覧</h1>
 
+        @php
+            $currentRoute = Auth::guard('admin')->check()
+                ? 'admin.stamp_correction_request.list'
+                : 'correction.request.list';
+        @endphp
         <div class="request-tab">
-            <a href="{{ route(Route::currentRouteName(),  ['tab' => 'unapproved']) }}" class="{{ ($tab ?? 'unapproved') === 'unapproved' ? 'active' : '' }}">
+            <a href="{{ route($currentRoute, ['tab' => 'unapproved']) }}" class="{{ ($tab ?? 'unapproved') === 'unapproved' ? 'active' : '' }}">
             承認待ち
             </a>
 
-            <a href="{{ route(Route::currentRouteName(), ['tab' => 'approved']) }}"
+            <a href="{{ route($currentRoute, ['tab' => 'approved']) }}"
                 class="{{ $tab === 'approved' ? 'active' : '' }}">
             承認済み
             </a>
@@ -36,10 +41,7 @@
                     <tr>
                         <th>
                             @php
-                                $statusMap = [
-                                    'pending' => '承認待ち',
-                                    'approved' => '承認済み',
-                                ];
+                                $statusMap = ['pending' => '承認待ち','approved' => '承認済み'];
                                 $statusValue = $correctionRequest->approval->status ?? null;
                             @endphp
                             {{ $statusMap[$statusValue] ?? '申請なし' }}
@@ -52,7 +54,11 @@
                         @if (Auth::guard('admin')->check())
                             <a href="{{ route('admin.correction.approve.show', ['attendance_correct_request' => $correctionRequest]) }}" class="detail_link">詳細</a>
                         @else
-                            <a href="{{ route('attendance.edit',  ['id' => $correctionRequest->attendance->id, 'from' => 'approved_list']) }}" class="detail_link">詳細</a>
+                            <a href="{{ route('attendance.edit', [
+                                'attendance_id' => $correctionRequest->attendance->id,
+                                'correction_request_id' => $correctionRequest->id,
+                                'from' => 'approved_list'
+                            ]) }}" class="detail_link">詳細</a>
                         @endif
                         </th>
                     </tr>

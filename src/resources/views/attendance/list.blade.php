@@ -46,15 +46,15 @@
                 <tr>
                     <td>{{ $dateInfo['display'] }}</td>
                     @php
-    $attendance = $attendances[$dateInfo['carbon']->toDateString()] ?? null;
+                        $attendance = $attendances[$dateInfo['carbon']->toDateString()] ?? null;
                     @endphp
                     <td>{{ $attendance->clock_in_formatted ?? '' }}</td>
                     <td>{{ $attendance->clock_out_formatted ?? '' }}</td>
                     <td>
                         @if (isset($attendance))
                             @php
-        $breakHours = floor($attendance->total_break_minutes / 60);
-        $breakMinutes = $attendance->total_break_minutes % 60;
+                                $breakHours = floor($attendance->total_break_minutes / 60);
+                                $breakMinutes = $attendance->total_break_minutes % 60;
                             @endphp
                             {{ sprintf('%02d:%02d', $breakHours, $breakMinutes) }}
                         @else
@@ -64,23 +64,25 @@
                     <td>
                         @if (isset($attendance))
                             @php
-        $workHours = floor($attendance->total_work_minutes / 60);
-        $workMinutes = $attendance->total_work_minutes % 60;
+                                $workHours = floor($attendance->total_work_minutes / 60);
+                                $workMinutes = $attendance->total_work_minutes % 60;
                             @endphp
                             {{ sprintf('%02d:%02d', $workHours, $workMinutes) }}
                         @else
 
                         @endif
                     </td>
+                    @php
+                        $latestCorrection = isset($attendance) ? optional($attendance->correctionRequest) : null;
+                    @endphp
                     <td>
                         @if (isset($attendance))
-                            @if (Auth::guard('admin')->check())
+                            <!--@if (Auth::guard('admin')->check())
                                 <a href="{{ route('admin.attendance.show', $attendance->id) }}" class="detail_link">詳細</a>
-                            @else
-                                <a href="{{ route('attendance.edit', $attendance->id) }}" class="detail_link">詳細</a>
-                            @endif
+                            @else  @endif-->
+                                <a href="{{ route('attendance.edit', ['attendance_id'=>$attendance->id, 'correction_request_id'=> optional($latestCorrection)->id]) }}" class="detail_link">詳細</a>
                         @else
-                            <span class="detail_link">詳細</span>
+                            <span class="empty_detail_link">詳細</span>
                         @endif
                     </td>
                 </tr>

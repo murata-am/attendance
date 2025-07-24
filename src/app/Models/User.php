@@ -55,10 +55,5 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(CorrectionRequest::class);
     }
 
-    public function approvedCorrections()
-    {
-        return $this->hasMany(CorrectionApproval::class, 'approved_by');
-    }
-
 
 }

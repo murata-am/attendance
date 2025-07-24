@@ -39,7 +39,7 @@ class AttendanceRequest extends FormRequest
         return [
             'clock_in.required' => '出勤時刻を入力してください',
             'clock_out.required' => '退勤時刻を入力してください',
-            'reason.required' => '備考を入力してください',
+            'reason.required' => '備考を記入してください',
             'reason.max' => '255文字以内で入力してください'
         ];
     }

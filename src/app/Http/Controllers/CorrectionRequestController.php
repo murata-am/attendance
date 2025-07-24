@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Attendance;
 use App\Models\CorrectionRequest;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Models\CorrectionApproval;
 
 class CorrectionRequestController extends Controller
 {
+    
     public function index(Request $request)
     {
-        $tab = $request->input('tab', 'unapproved');
+        $tab = $request->get('tab', 'unapproved');
 
         $query = CorrectionRequest::with(['user', 'attendance', 'approval']);
 
         if (Auth::guard('web')->check()) {
-            $query->where('user_id', Auth::id());
+            $query->where('user_id', Auth::guard('web')->id());
+        } elseif (Auth::guard('admin')->check()) {
+            // 管理者の場合：何もしない（全件取得）
+        } else {
+            // ログインしていない → エラーなど対応
+            abort(403, 'Unauthorized');
         }
 
         if ($tab === 'unapproved') {
@@ -34,7 +37,6 @@ class CorrectionRequestController extends Controller
         ]);
     }
 
-    
 
     public function showApproved($id)
     {

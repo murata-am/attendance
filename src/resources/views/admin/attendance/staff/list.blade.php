@@ -88,7 +88,7 @@
                             <a href="{{ route('attendance.edit', $attendance->id) }}" class="detail_link">詳細</a>
                         @endif
                     @else
-                        <span class="detail_link">詳細</span>
+                        <span class="empty_detail_link">詳細</span>
                     @endif
                 </td>
             </tr>

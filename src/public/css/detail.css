@@ -39,7 +39,7 @@ table {
 
 
 .detail_table th {
-    padding: 20px 35px;
+    padding: 20px 30px;
     text-align: left;
     font-weight: bold;
     border-bottom: solid 3px rgb(237, 237, 237);
@@ -97,7 +97,7 @@ table {
 }
 
 input {
-    padding: 5px 28px;
+    padding: 5px 20px;
 }
 
 .reason-textarea {

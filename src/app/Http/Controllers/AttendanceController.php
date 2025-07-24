@@ -19,7 +19,7 @@ class AttendanceController extends Controller
             ->first();
         $statusMap = [
             'work_off' => '勤務外',
-            'working' => '勤務中',
+            'working' => '出勤中',
             'break' => '休憩中',
             'finished_work' => '退勤済',
         ];

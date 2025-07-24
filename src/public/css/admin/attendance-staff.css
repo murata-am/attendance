@@ -107,6 +107,12 @@ tbody td {
     font-weight: bold;
 }
 
+.empty_detail_link{
+    text-decoration: none;
+    color: #aaaaaa;
+    font-weight: bold;
+}
+
 .csv-container {
     display: flex;
     justify-content: flex-end;

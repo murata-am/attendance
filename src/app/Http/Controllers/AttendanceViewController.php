@@ -99,13 +99,25 @@ class AttendanceViewController extends Controller
         ]);
     }
 
-    public function edit($id)
+    public function edit($attendance_id, $correction_request_id = null)
     {
         $attendance = Attendance::with([
             'breakTimes',
             'correctionRequest.correctionBreakTimes',
             'correctionRequest.approval'
-        ])->findOrFail($id);
+        ])->findOrFail($attendance_id);
+
+        $correction = null;
+        // correction_request_id が指定されていた場合、その特定の修正申請を取得
+        if ($correction_request_id) {
+            $correction = CorrectionRequest::with('correctionBreakTimes', 'approval')
+                ->where('id', $correction_request_id)
+                ->where('attendance_id', $attendance_id)
+                ->findOrFail($correction_request_id);
+        } else {
+            // 最新の修正申請
+            $correction = $attendance->correctionRequest;
+        }
 
         $name = $attendance->user->name;
         $carbonDate = Carbon::parse($attendance->work_date);
@@ -113,22 +125,17 @@ class AttendanceViewController extends Controller
         $work_year = $carbonDate->year . '年';
         $work_month_day = $carbonDate->format('n月j日');
 
-        $status = optional(optional($attendance->correctionRequest)->approval)->status;
-
-        $correction = $attendance->correctionRequest;
+        $status = optional(optional($correction)->approval)->status;
 
         $from = request()->get('from');
 
-        if ($status === 'pending' && $attendance->correctionRequest) {
-            $correction = $attendance->correctionRequest;
-            $attendance->clock_in = $correction->clock_in;
-            $attendance->clock_out = $correction->clock_out;
-            $attendance->breakTimes = $correction->correctionBreakTimes;
-        }
+        //$displayClockIn = $correction->corrected_clock_in ?? $attendance->clock_in;
+        //$displayClockOut = $correction->corrected_clock_out ?? $attendance->clock_out;
+
 
         if ($status === 'approved') {
             if ($from === 'approved_list') {
-                // 修正申請一覧（編集不可）→ 修正内容を表示
+                // 修正申請一覧（編集不可）→ 修正承認された勤怠データを表示
                 $breakTimes = optional($correction)->correctionBreakTimes ?? collect();
             } else {
                 // 勤怠一覧（編集可能）→ 承認済みなので更新後の勤怠データを使用
@@ -143,7 +150,13 @@ class AttendanceViewController extends Controller
         }
 
         return view('attendance.detail', compact(
-            'attendance', 'name', 'work_year', 'work_month_day', 'status', 'correction', 'breakTimes'
+            'attendance',
+            'name',
+            'work_year',
+            'work_month_day',
+            'status',
+            'correction',
+            'breakTimes',
         ));
     }
 
@@ -154,16 +167,18 @@ class AttendanceViewController extends Controller
         $correctionRequest = new CorrectionRequest();
         $correctionRequest->attendance_id = $id;
         $correctionRequest->user_id = auth()->id();
-        $correctionRequest->work_date = $attendance->work_date ?? Carbon::parse($attendance->clock_in)->toDateString();
+        $correctionRequest->work_date = $attendance->work_date;
 
         $clockIn = $request->input('clock_in');
         $clockOut = $request->input('clock_out');
 
         $correctionRequest->corrected_clock_in = $clockIn;
         $correctionRequest->corrected_clock_out = $clockOut;
-        $correctionRequest->reason = $request->reason;
+        $correctionRequest->reason = $request->input('reason');
 
         $correctionRequest->save();
+        $correctionRequest->load('user');
+        //dd($correctionRequest);
 
         $approval = new CorrectionApproval();
         $approval->correction_request_id = $correctionRequest->id;

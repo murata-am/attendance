@@ -53,9 +53,9 @@
                         <div class="center-wrapper">
                             <span class="tilde">～</span>
                             <div class="error__message__center">
-                            @error('clock_in_out')
-                                {{ $message }}
-                            @enderror
+                                @error('clock_in_out')
+                                    {{ $message }}
+                                @enderror
                             </div>
                         </div>
                     </td>
@@ -80,68 +80,63 @@
                     <td></td>
                 </tr>
 
-                @php
-                    $breakTimes = ($correction && $correction->correctionBreakTimes->isNotEmpty()) ? $correction->correctionBreakTimes : $attendance->breakTimes;
-                @endphp
-
-
                 @foreach ($breakTimes ?? [] as $i => $break)
-                    <tr>
-                        <th class="row-name">
-                            @if ($i === 0)
-                                休憩
-                            @else
-                                休憩{{ $i + 1 }}
-                            @endif
-                        </th>
+                <tr>
+                    <th class="row-name">
+                        @if ($i === 0)
+                            休憩
+                        @else
+                            休憩{{ $i + 1 }}
+                        @endif
+                    </th>
 
-                        <td>
-                            @if (empty($status))
-                                <input type="time" name="break_start[]" value="{{ old('break_start.' . $i, $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}">
-                            @elseif($status === 'approved')
-                                @if (request()->get('from') === 'approved_list')
-                                    {{ $break->corrected_break_start ? \Carbon\Carbon::parse($break->corrected_break_start)->format('H:i') : '' }}
-                                @else
-                                    <input type="time" name="break_start[]" value="{{ old('break_start.' . $i, $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}">
-                                @endif
-                            @elseif($status === 'pending')
+                    <td>
+                        @if (empty($status))
+                            <input type="time" name="break_start[]" value="{{ old('break_start.' . $i, $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}">
+                        @elseif($status === 'approved')
+                            @if (request()->get('from') === 'approved_list')
                                 {{ $break->corrected_break_start ? \Carbon\Carbon::parse($break->corrected_break_start)->format('H:i') : '' }}
+                            @else
+                                <input type="time" name="break_start[]" value="{{ old('break_start.' . $i, $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}">
                             @endif
-                        </td>
-                        <td class="error-td">
-                            <div class="center-wrapper">
-                                <span class="tilde">～</span>
-                                <div class="error__message__center">
-                                    @error("break_time.$i")
-                                        {{ $message }}
-                                    @enderror
-                                </div>
+                        @elseif($status === 'pending')
+                            {{ $break->corrected_break_start ? \Carbon\Carbon::parse($break->corrected_break_start)->format('H:i') : '' }}
+                        @endif
+                    </td>
+                    <td class="error-td">
+                        <div class="center-wrapper">
+                            <span class="tilde">～</span>
+                            <div class="error__message__center">
+                                @error("break_time.$i")
+                                    {{ $message }}
+                                @enderror
                             </div>
-                        </td>
-                        <td>
-                            @if (empty($status))
-                                <input type="time" name="break_end[]" value="{{ old('break_end.' . $i, $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '') }}">
-                            @elseif($status === 'approved')
-                                @if (request()->get('from') === 'approved_list')
-                                    {{ $break->corrected_break_end ? \Carbon\Carbon::parse($break->corrected_break_end)->format('H:i') : '' }}
-                                @else
-                                    <input type="time" name="break_end[]" value="{{ old('break_end.' . $i, $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '') }}">
-                                @endif
-                            @elseif($status === 'pending')
+                        </div>
+                    </td>
+                    <td>
+                        @if (empty($status))
+                            <input type="time" name="break_end[]" value="{{ old('break_end.' . $i, $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '') }}">
+                        @elseif($status === 'approved')
+                            @if (request()->get('from') === 'approved_list')
                                 {{ $break->corrected_break_end ? \Carbon\Carbon::parse($break->corrected_break_end)->format('H:i') : '' }}
+                            @else
+                                <input type="time" name="break_end[]" value="{{ old('break_end.' . $i, $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '') }}">
                             @endif
-                        </td>
-                        <td></td>
-                    </tr>
+                        @elseif($status === 'pending')
+                            {{ $break->corrected_break_end ? \Carbon\Carbon::parse($break->corrected_break_end)->format('H:i') : '' }}
+                        @endif
+                    </td>
+                    <td></td>
+                </tr>
                 @endforeach
 
                 @php
                     $nextIndex = count($breakTimes ?? []);
                 @endphp
 
-                @if (empty($status || $status === 'approved'))
+                @if ((is_null($status) || $status === 'approved')&& request()->get('from') !== 'approved_list')
                     <tr>
-                        <th class="row-name">休憩{{ $nextIndex + 1 }}</th>
+                        <th class="row-name">{{ $nextIndex === 0 ? '休憩' : '休憩' . ($nextIndex + 1) }}</th>
                         <td>
                             <input type="time" name="break_start[]" value="{{ old('break_start.' . $nextIndex) }}">
                         </td>
@@ -167,29 +162,29 @@
                     </tr>
                 @endif
 
-                <tr @if($status === 'pending') class="pending-note-row" @endif>
-                    <th class="row-name">備考</th>
-                    <td colspan="3">
-                        @if (empty($status))
-                            <textarea name="reason" class="reason-textarea">{{ old('reason', $attendance->reason) }}</textarea>
-                            <div class="reason-error">
-                                @error("reason")
-                                    {{ $message }}
-                                @enderror
-                            </div>
-                        @elseif($status === 'approved')
-                            @if (request()->get('from') === 'approved_list')
-                                <div class="reason-left">{{ $attendance->reason }}</div>
-                            @else
+                    <tr @if($status === 'pending') class="pending-note-row" @endif>
+                        <th class="row-name">備考</th>
+                        <td colspan="3">
+                            @if (empty($status))
                                 <textarea name="reason" class="reason-textarea">{{ old('reason', $attendance->reason) }}</textarea>
+                                <div class="reason-error">
+                                    @error("reason")
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            @elseif($status === 'approved')
+                                @if (request()->get('from') === 'approved_list')
+                                    <div class="reason-left">{{ $correction->reason }}</div>
+                                @else
+                                    <textarea name="reason" class="reason-textarea">{{ old('reason', $attendance->reason) }}</textarea>
+                                @endif
+                            @elseif($status === 'pending')
+                                <div class="reason-left">
+                                    {{ $correction->reason }}
+                                </div>
                             @endif
-                        @elseif($status === 'pending')
-                            <div class="reason-left">
-                                {{ $correction->reason }}
-                            </div>
-                        @endif
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
             </table>
 
             <div class="correction-status">
