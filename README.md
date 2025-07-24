@@ -21,10 +21,10 @@
  DB_USERNAME=laravel_user　　
  DB_PASSWORD=laravel_pass
 ```
- ※環境構築の際、権限エラーが出た場合は次のコマンドなど
+ ※環境構築の際、権限エラーが出ることがありましたので、次のコマンドなどで
  読み取り可能にできるものをお願いします。
  ```bash
- chmod 664 .env
+ sudo chmod -R 664 src/*
 ```
 
 6. アプリケーションキーの作成
