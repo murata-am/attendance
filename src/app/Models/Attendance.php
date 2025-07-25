@@ -32,5 +32,4 @@ class Attendance extends Model
     {
         return $this->hasOne(CorrectionRequest::class);
     }
-
 }

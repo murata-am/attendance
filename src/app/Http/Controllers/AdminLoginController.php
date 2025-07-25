@@ -20,5 +20,4 @@ class AdminLoginController extends Controller
             'email' => 'ログイン情報が登録されていません',
         ]);
     }
-
 }

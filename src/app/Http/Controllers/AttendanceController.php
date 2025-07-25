@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Attendance;
@@ -104,5 +103,4 @@ class AttendanceController extends Controller
 
         return redirect('/attendance')->with('status', '休憩を終了しました。');
     }
-
 }
