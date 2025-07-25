@@ -33,7 +33,6 @@ class CorrectionApproveController extends Controller
             'work_month_day' => $work_month_day,
             'status' => $status,
         ]);
-
     }
 
     public function approve(CorrectionRequest $attendance_correct_request)
@@ -62,9 +61,7 @@ class CorrectionApproveController extends Controller
             $attendance_correct_request->approval->save();
         });
 
-
         return redirect()->route('admin.correction.approve.show', ['attendance_correct_request' => $attendance_correct_request->id])
         ->with('success', '修正申請を承認しました。');
-
     }
 }

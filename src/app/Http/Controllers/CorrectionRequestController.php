@@ -36,7 +36,6 @@ class CorrectionRequestController extends Controller
         ]);
     }
 
-
     public function showApproved($id)
     {
         $correction = CorrectionRequest::with([
@@ -63,5 +62,4 @@ class CorrectionRequestController extends Controller
             'work_month_day' => $work_month_day,
         ]);
     }
-
 }

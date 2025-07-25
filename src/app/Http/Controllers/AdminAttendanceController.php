@@ -90,7 +90,6 @@ class AdminAttendanceController extends Controller
             'status' => $status,
             'correction' => $correction,
         ]);
-
     }
 
     public function update(AttendanceRequest $request, $id)
