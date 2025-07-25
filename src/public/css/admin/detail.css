@@ -148,24 +148,11 @@ input {
     white-space: nowrap;
 }
 
-
-
-
 @media (min-width: 1400px) and (max-width: 1540px) {
     .detail_container {
         width: 70%;
     }
-/*
-    .detail_table th,
-    .detail_table td {
-        padding: 30px 50px;
-        font-size: 18px;
-    }
 
-    .detail_table th.error-th {
-        padding: 40px 35px 10px;
-    }
-*/
     input,
     .reason-textarea {
         font-size: 16px;

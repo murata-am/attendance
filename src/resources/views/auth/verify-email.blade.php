@@ -3,6 +3,7 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/verify-email.css') }}">
 @endsection
+
 @section('content')
     <div class="content-container">
         <div>登録していただいたメールアドレスに認証メールを送付しました。<br>

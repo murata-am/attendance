@@ -4,12 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AttendanceRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance;
-use App\Models\BreakTime;
-use App\Models\User;
 use Carbon\Carbon;
-
 
 class AdminAttendanceController extends Controller
 {

@@ -51,7 +51,6 @@ class StaffController extends Controller
                 'display' => $date->format("m/d") . "(" . $weekday . ") "
             ];
         }
-
         $rawAttendances = Attendance::with('breakTimes')
             ->where('user_id', $userId)
             ->whereBetween('work_date', [$startOfMonth->toDateString(), $endOfMonth->toDateString()])
@@ -81,24 +80,17 @@ class StaffController extends Controller
                             $totalBreak += $start->diffInMinutes($end);
                         }
                     }
-
                     $attendance->total_break_minutes = $totalBreak;
                     $attendance->total_work_minutes = $clockIn->diffInMinutes($clockOut) - $totalBreak;
                 }
-                    $attendances[$dateKey] = $attendance;
+                $attendances[$dateKey] = $attendance;
             } else {
-                    $attendances[$dateKey] = null;
+                $attendances[$dateKey] = null;
             }
         }
 
         return view('admin.attendance.staff.list', [
-            'user' => $user,
-            'year' => $year,
-            'month' => $month,
-            'dates' => $dates,
-            'attendances' => $attendances,
-            'prevMonth' => $prevMonth,
-            'nextMonth' => $nextMonth,
+            'user' => $user, 'year' => $year, 'month' => $month, 'dates' => $dates, 'attendances' => $attendances, 'prevMonth' => $prevMonth, 'nextMonth' => $nextMonth,
         ]);
     }
 

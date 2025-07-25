@@ -29,5 +29,4 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(CorrectionApproval::class, 'approved_by');
     }
-
 }

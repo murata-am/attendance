@@ -6,7 +6,6 @@
 .attendance_content{
     display: inline-block;
     white-space: nowrap;
-
     height: 30px;
     text-align: center;
     margin: 70px auto;
@@ -51,7 +50,6 @@
 .btn-black {
     background-color: #000;
     color: #fff;
-
 }
 
 .btn-black:hover {

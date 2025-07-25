@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Fortify;
 use Illuminate\Validation\ValidationException;
-use phpDocumentor\Reflection\Types\Boolean;
 
 
 class AuthenticatedSessionController extends Controller

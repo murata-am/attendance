@@ -70,11 +70,12 @@ input {
         padding: 15px;
         font-size: 16px;
         }
-    
+
     input {
         height: 38px;
         font-size: 15px;
     }
+
     .login-btn {
         height: 40px;
         font-size: 18px;

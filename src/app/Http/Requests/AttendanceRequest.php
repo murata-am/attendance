@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
-
 class AttendanceRequest extends FormRequest
 {
     /**

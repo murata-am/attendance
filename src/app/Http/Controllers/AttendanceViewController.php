@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\CorrectionRequest;
 use App\Models\CorrectionBreakTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance;
-use App\Models\BreakTime;
 use App\Models\CorrectionApproval;
 use Carbon\Carbon;
 use App\Http\Requests\AttendanceRequest;
@@ -129,10 +127,6 @@ class AttendanceViewController extends Controller
 
         $from = request()->get('from');
 
-        //$displayClockIn = $correction->corrected_clock_in ?? $attendance->clock_in;
-        //$displayClockOut = $correction->corrected_clock_out ?? $attendance->clock_out;
-
-
         if ($status === 'approved') {
             if ($from === 'approved_list') {
                 // 修正申請一覧（編集不可）→ 修正承認された勤怠データを表示
@@ -178,7 +172,6 @@ class AttendanceViewController extends Controller
 
         $correctionRequest->save();
         $correctionRequest->load('user');
-        //dd($correctionRequest);
 
         $approval = new CorrectionApproval();
         $approval->correction_request_id = $correctionRequest->id;

@@ -28,13 +28,13 @@ use App\Http\Controllers\CorrectionApproveController;
 
 // メール認証のルート
 Route::get('/email/verify', function () {
-    return view('auth.verify-email'); // このファイルを自分で作る
+    return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
 // メール内のリンクがアクセスされたとき
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill(); // ユーザーを認証済みにする
-    return redirect('/attendance'); // 好きな場所に変更可能
+    return redirect('/attendance');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // 再送信用

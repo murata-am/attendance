@@ -116,7 +116,6 @@ class AdminAttendanceCorrectionTest extends TestCase
             'created_at' => Carbon::now()
         ]);
 
-
         $response = $this->actingAs($admin, 'admin')->get(route('admin.stamp_correction_request.list',['tab'=>'approved']));
         $response->assertStatus(200);
         $response->assertSee('承認済み');
@@ -124,7 +123,6 @@ class AdminAttendanceCorrectionTest extends TestCase
         $response->assertSee('2025/07/01');
         $response->assertSee('テストの理由');
         $response->assertSee(now()->format('Y/m/d'));
-
     }
 
     // 修正申請の詳細内容が正しく表示されている
@@ -256,5 +254,4 @@ class AdminAttendanceCorrectionTest extends TestCase
             'approved_at' => Carbon::now(),
         ]);
     }
-
 }

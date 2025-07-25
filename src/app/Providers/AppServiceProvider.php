@@ -6,8 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 use App\Http\Requests\LoginRequest;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
-use Laravel\Fortify\Contracts\LogoutResponse;
-use App\Http\Responses\CustomLogoutResponse;
 
 class AppServiceProvider extends ServiceProvider
 {

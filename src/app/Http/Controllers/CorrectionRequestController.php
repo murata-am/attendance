@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CorrectionRequestController extends Controller
 {
-    
     public function index(Request $request)
     {
         $tab = $request->get('tab', 'unapproved');
@@ -19,9 +18,9 @@ class CorrectionRequestController extends Controller
         if (Auth::guard('web')->check()) {
             $query->where('user_id', Auth::guard('web')->id());
         } elseif (Auth::guard('admin')->check()) {
-            // 管理者の場合：何もしない（全件取得）
+            // 管理者の場合：申請を全件取得
         } else {
-            // ログインしていない → エラーなど対応
+            // ログインしていない時
             abort(403, 'Unauthorized');
         }
 
@@ -63,7 +62,6 @@ class CorrectionRequestController extends Controller
             'work_year' => $work_year,
             'work_month_day' => $work_month_day,
         ]);
-
     }
 
 }

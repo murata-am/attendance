@@ -66,5 +66,4 @@ class Kernel extends HttpKernel
         'admin.only' => \App\Http\Middleware\AdminOnly::class,
         'admin.session' => \App\Http\Middleware\AdminMiddleware::class,
     ];
-
 }

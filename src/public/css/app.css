@@ -44,7 +44,5 @@
 main {
     background-color: rgb(237, 237, 237);
     min-height: 100vh;
-        /* 画面全体に背景が届くように */
-        padding: 20px;
-        /* 上下左右に余白 */
+    padding: 20px;
 }

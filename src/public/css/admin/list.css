@@ -19,7 +19,6 @@
 .days {
     display: flex;
     align-items: center;
-
 }
 
 .calender-icon {
@@ -43,7 +42,6 @@
     text-align: left;
     margin: 50px auto;
     padding-left: 10px;
-
 }
 
 .attendance-table {

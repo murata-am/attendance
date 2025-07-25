@@ -77,10 +77,7 @@
                     @endphp
                     <td>
                         @if (isset($attendance))
-                            <!--@if (Auth::guard('admin')->check())
-                                <a href="{{ route('admin.attendance.show', $attendance->id) }}" class="detail_link">詳細</a>
-                            @else  @endif-->
-                                <a href="{{ route('attendance.edit', ['attendance_id'=>$attendance->id, 'correction_request_id'=> optional($latestCorrection)->id]) }}" class="detail_link">詳細</a>
+                            <a href="{{ route('attendance.edit', ['attendance_id'=>$attendance->id, 'correction_request_id'=> optional($latestCorrection)->id]) }}" class="detail_link">詳細</a>
                         @else
                             <span class="empty_detail_link">詳細</span>
                         @endif
@@ -88,7 +85,5 @@
                 </tr>
             @endforeach
         </table>
-
     </div>
-
 @endsection

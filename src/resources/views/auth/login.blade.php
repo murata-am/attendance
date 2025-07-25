@@ -11,13 +11,11 @@
 
         <label for="email">メールアドレス</label>
         <input type="text" name="email" id="email" value="{{ old('email') }}">
-
         <div class="error__message">
             @error('email')
                 {{ $message }}
             @enderror
         </div>
-
 
         <label for="password">パスワード</label>
         <input type="password" name="password" id="password">
@@ -31,6 +29,4 @@
         <button class="login-btn" type="submit">ログインする</button>
         <a href="/register" class="register_link">会員登録はこちら</a>
     </form>
-
-
 @endsection

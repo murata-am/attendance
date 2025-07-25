@@ -65,8 +65,6 @@
                         {{ \Carbon\Carbon::parse($correction->corrected_clock_out)->format('H:i') }}
                     @endif
 
-                    
-
                     <div class="error__message">
                         @error('clock_out')
                             {{ $message }}

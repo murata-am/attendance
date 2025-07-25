@@ -126,8 +126,6 @@ table tr:last-child th:first-child {
     .title {
         font-size: 20px;
     }
-
-    
 }
 
 @media (min-width: 768px) and (max-width: 850px) {
@@ -146,5 +144,4 @@ table tr:last-child th:first-child {
         padding: 16px 20px;
         font-size: 14px;
     }
-
 }

@@ -162,29 +162,29 @@
                     </tr>
                 @endif
 
-                    <tr @if($status === 'pending') class="pending-note-row" @endif>
-                        <th class="row-name">備考</th>
-                        <td colspan="3">
-                            @if (empty($status))
+                <tr @if($status === 'pending') class="pending-note-row" @endif>
+                    <th class="row-name">備考</th>
+                    <td colspan="3">
+                        @if (empty($status))
+                            <textarea name="reason" class="reason-textarea">{{ old('reason', $attendance->reason) }}</textarea>
+                            <div class="reason-error">
+                                @error("reason")
+                                    {{ $message }}
+                                @enderror
+                            </div>
+                        @elseif($status === 'approved')
+                            @if (request()->get('from') === 'approved_list')
+                                <div class="reason-left">{{ $correction->reason }}</div>
+                            @else
                                 <textarea name="reason" class="reason-textarea">{{ old('reason', $attendance->reason) }}</textarea>
-                                <div class="reason-error">
-                                    @error("reason")
-                                        {{ $message }}
-                                    @enderror
-                                </div>
-                            @elseif($status === 'approved')
-                                @if (request()->get('from') === 'approved_list')
-                                    <div class="reason-left">{{ $correction->reason }}</div>
-                                @else
-                                    <textarea name="reason" class="reason-textarea">{{ old('reason', $attendance->reason) }}</textarea>
-                                @endif
-                            @elseif($status === 'pending')
-                                <div class="reason-left">
-                                    {{ $correction->reason }}
-                                </div>
                             @endif
-                        </td>
-                    </tr>
+                        @elseif($status === 'pending')
+                            <div class="reason-left">
+                                {{ $correction->reason }}
+                            </div>
+                        @endif
+                    </td>
+                </tr>
             </table>
 
             <div class="correction-status">

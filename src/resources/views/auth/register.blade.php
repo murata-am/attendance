@@ -4,9 +4,6 @@
 <link rel="stylesheet" href="{{ asset('css/register.css') }}">
 @endsection
 
-@php
-use Illuminate\Support\Str;
-@endphp
 @section('content')
 
     <form action="{{ route('register') }}" method="post" class="register__content">

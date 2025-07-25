@@ -4,16 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Vtiful\Kernel\Format;
 use Carbon\Carbon;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 
-
-
 class AttendanceController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $attendance = Attendance::where('user_id', Auth::id())
             ->whereDate('work_date', today())
             ->first();
@@ -26,7 +24,6 @@ class AttendanceController extends Controller
         $statusKey = $attendance->status ?? 'work_off';
         $status = $statusMap[$statusKey];
 
-
         $today = Carbon::now();
         $date = $today->isoFormat('YYYY年M月D日(ddd)');
         $time = $today->format('H:i');
@@ -34,7 +31,7 @@ class AttendanceController extends Controller
         return view('attendance.index', compact('statusKey', 'status', 'date', 'time'));
     }
 
-    public function storeClockIn(Request $request)
+    public function storeClockIn()
     {
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
@@ -50,7 +47,7 @@ class AttendanceController extends Controller
         return redirect('/attendance')->with('status', '出勤を記録しました。');
     }
 
-    public function storeClockOut(Request $request)
+    public function storeClockOut()
     {
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
@@ -67,7 +64,7 @@ class AttendanceController extends Controller
         return redirect('/attendance')->with('status', '退勤を記録しました。');
     }
 
-    public function storeBreakStart(Request $request)
+    public function storeBreakStart()
     {
         $user = Auth::user();
         $today = Carbon::today()->toDateString();
@@ -87,7 +84,7 @@ class AttendanceController extends Controller
         return redirect('/attendance')->with('status', '休憩を開始しました。');
     }
 
-    public function storeBreakEnd(Request $request)
+    public function storeBreakEnd()
     {
         $user = Auth::user();
         $today = Carbon::today()->toDateString();

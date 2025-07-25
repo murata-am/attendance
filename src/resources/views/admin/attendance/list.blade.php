@@ -68,7 +68,7 @@
                                     <a href="{{ route('admin.attendance.show', $record['attendance_id']) }}"
                                         class="detail_link">詳細</a>
                                 @else
-
+                                    <!-- データがなければ表示しない -->
                                 @endif
                             </td>
                         </tr>
