@@ -3,19 +3,17 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 
-class DetailTest extends TestCase
+class DetailCorrectionValidationTest extends TestCase
 {
     use RefreshDatabase;
 
-
-    // 勤怠詳細画面で「名前」がログインユーザーの名前になっている
-    public function test_detail_show_name()
+    // 出勤時間が退勤時間より後になっている場合、エラーメッセージが表示される
+    public function test_validation__when_clock_in_after_clock_out()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
         $user = User::factory()->create();
@@ -32,14 +30,19 @@ class DetailTest extends TestCase
             'break_end' => '13:00:00',
         ]);
 
-        $response = $this->actingAs($user)->get(route('attendance.edit', ['attendance_id' => $attendance->id]));
-        $response->assertStatus(200);
+        $response = $this->actingAs($user)->post(route('attendance.store', $attendance->id), [
+            'clock_in' => '18:00',
+            'clock_out' => '09:00',
+            'reason' => 'テストの理由',
+        ]);
 
-        $response->assertSee($user->name);
+        $response->assertSessionHasErrors([
+            'clock_in_out' => '出勤時間もしくは退勤時間が不適切な値です'
+        ]);
     }
 
-    // 勤怠詳細画面で「日付」が選択した日付になっている
-    public function test_detail_show_date()
+    // 休憩開始時間が退勤時間より後になっている場合、エラーメッセージが表示される
+    public function test_validation_when_clock_out_after_break_start()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
         $user = User::factory()->create();
@@ -56,15 +59,21 @@ class DetailTest extends TestCase
             'break_end' => '13:00:00',
         ]);
 
-        $response = $this->actingAs($user)->get(route('attendance.edit', ['attendance_id' => $attendance->id]));
-        $response->assertStatus(200);
+        $response = $this->actingAs($user)->post(route('attendance.store', $attendance->id), [
+            'clock_in' => '09:00',
+            'clock_out' => '18:00',
+            'break_start' => ['19:00'],
+            'break_end' => ['20:00'],
+            'reason' => 'テストの理由',
+        ]);
 
-        $response->assertSeeText('2024年');
-        $response->assertSeeText('7月1日');
+        $response->assertSessionHasErrors([
+            'break_time.0' => '休憩時間が勤務時間外です',
+        ]);
     }
 
-    // 「出勤・退勤」の時間がログインユーザーの打刻と一致している
-    public function test_detail_show_attendance_time()
+    // 休憩終了時間が退勤時間より後になっている場合、エラーメッセージが表示される
+    public function test_validation__when_clock_out_after_break_end()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
         $user = User::factory()->create();
@@ -81,15 +90,21 @@ class DetailTest extends TestCase
             'break_end' => '13:00:00',
         ]);
 
-        $response = $this->actingAs($user)->get(route('attendance.edit', ['attendance_id' => $attendance->id]));
-        $response->assertStatus(200);
+        $response = $this->actingAs($user)->post(route('attendance.store', $attendance->id), [
+            'clock_in' => '09:00',
+            'clock_out' => '18:00',
+            'break_start' => ['12:00'],
+            'break_end' => ['19:00'],
+            'reason' => 'テストの理由',
+        ]);
 
-        $response->assertSee('09:00');
-        $response->assertSee('18:00');
+        $response->assertSessionHasErrors([
+            'break_time.0' => '休憩時間が勤務時間外です',
+        ]);
     }
 
-    // 「休憩」にある時間がログインユーザーの打刻と一致している
-    public function test_detail_show_break_time()
+    // 備考欄が未入力の場合、エラーメッセージが表示される
+    public function test_validation_when_reason_empty()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
         $user = User::factory()->create();
@@ -106,10 +121,13 @@ class DetailTest extends TestCase
             'break_end' => '13:00:00',
         ]);
 
-        $response = $this->actingAs($user)->get(route('attendance.edit', ['attendance_id' => $attendance->id]));
-        $response->assertStatus(200);
+        $response = $this->actingAs($user)->post(route('attendance.store', $attendance->id), [
+            'clock_in' => '10:00',
+            'clock_out' => '18:00',
+            'reason' => '',
+        ]);
 
-        $response->assertSee('12:00');
-        $response->assertSee('13:00');
+        $errors = session('errors');
+        $this->assertEquals('備考を記入してください', $errors->first('reason'));
     }
 }

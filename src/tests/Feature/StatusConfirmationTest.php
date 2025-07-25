@@ -6,8 +6,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Attendance;
-use App\Models\BreakTime;
-use Illuminate\Support\Facades\Hash;
 
 class StatusConfirmationTest extends TestCase
 {
@@ -17,12 +15,7 @@ class StatusConfirmationTest extends TestCase
     public function test_show_status_work_off()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => hash::make('password'),
-        ]);
+        $user = User::factory()->create();
 
         $this->actingAs($user);
 
@@ -36,17 +29,11 @@ class StatusConfirmationTest extends TestCase
         $response->assertSee('勤務外');
     }
 
-
     // 出勤中の時、勤怠ステータスに正しく表示される
     public function test_show_status_working()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => hash::make('password'),
-        ]);
+        $user = User::factory()->create();
 
         $this->actingAs($user);
 
@@ -66,17 +53,11 @@ class StatusConfirmationTest extends TestCase
         $response->assertSee('出勤中');
     }
 
-
     // 休憩中の時、勤怠ステータスに正しく表示される
     public function test_show_status_break_start()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => hash::make('password'),
-        ]);
+        $user = User::factory()->create();
 
         $this->actingAs($user);
 
@@ -90,17 +71,11 @@ class StatusConfirmationTest extends TestCase
         $response->assertSee('休憩中');
     }
 
-
     // 退勤済の時、勤怠ステータスに正しく表示される
     public function test_show_status_finished_work()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => hash::make('password'),
-        ]);
+        $user = User::factory()->create();
 
         $this->actingAs($user);
         Attendance::create([
@@ -113,5 +88,4 @@ class StatusConfirmationTest extends TestCase
         $response = $this->get("/attendance");
         $response->assertSee('退勤済');
     }
-
 }

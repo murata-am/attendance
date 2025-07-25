@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Carbon\Carbon;
@@ -17,12 +16,8 @@ class DateTest extends TestCase
     public function test_show_datetime()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'password' => Hash::make('password'),
-            'email_verified_at' => Carbon::now(),
-        ]);
+        $user = User::factory()->create();
+
         $this->actingAs($user);
 
         $now = Carbon::now();

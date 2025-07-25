@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -113,6 +112,5 @@ class RegisterTest extends TestCase
             'email' => 'test@example.com',
             // passwordはハッシュ化されているため確認しない
         ]);
-
     }
 }

@@ -18,12 +18,7 @@ class ClockInTest extends TestCase
     public function test_clock_in()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => hash::make('password'),
-        ]);
+        $user = User::factory()->create();
 
         $this->actingAs($user);
 
@@ -44,12 +39,7 @@ class ClockInTest extends TestCase
     public function test_clock_in_button_not_visible_after_finish_work()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => hash::make('password'),
-        ]);
+        $user = User::factory()->create();
 
         $this->actingAs($user);
         Attendance::create([
@@ -67,18 +57,9 @@ class ClockInTest extends TestCase
     public function test_clock_in_admin_show()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => hash::make('password'),
-        ]);
 
-        $admin = Admin::create([
-            'name' => '管理者ユーザー',
-            'email' => 'admin@example.com',
-            'password' => hash::make('password123'),
-        ]);
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
         $this->actingAs($user);
         $this->post('/attendance/clockIn');

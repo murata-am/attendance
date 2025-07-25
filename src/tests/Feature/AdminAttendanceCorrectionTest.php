@@ -13,6 +13,7 @@ use App\Models\CorrectionRequest;
 use App\Models\CorrectionApproval;
 use Carbon\Carbon;
 
+
 class AdminAttendanceCorrectionTest extends TestCase
 {
     use RefreshDatabase;
@@ -20,20 +21,10 @@ class AdminAttendanceCorrectionTest extends TestCase
     // 承認待ちの修正申請が全て表示されている
     public function test_Admin_show_pending_correction_request()
     {
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
-        $admin = Admin::create([
-            'name' => 'テスト管理者',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
-        ]);
-
-            $attendance = Attendance::create([
+        $attendance = Attendance::create([
                 'user_id' => $user->id,
                 'work_date' => '2025-07-01',
                 'clock_in' => '09:00:00',
@@ -60,7 +51,6 @@ class AdminAttendanceCorrectionTest extends TestCase
             'created_at' => Carbon::now()
         ]);
 
-
         $response = $this->actingAs($admin, 'admin')->get(route('admin.stamp_correction_request.list'));
         $response->assertStatus(200);
         $response->assertSee('承認待ち');
@@ -68,24 +58,13 @@ class AdminAttendanceCorrectionTest extends TestCase
         $response->assertSee('2025/07/01');
         $response->assertSee('テストの理由');
         $response->assertSee(now()->format('Y/m/d'));
-
     }
 
     // 承認済みの修正申請が全て表示されている
     public function test_Admin_show_approved_correction_request()
     {
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
-
-        $admin = Admin::create([
-            'name' => 'テスト管理者',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -128,18 +107,8 @@ class AdminAttendanceCorrectionTest extends TestCase
     // 修正申請の詳細内容が正しく表示されている
     public function test_Admin_show_correction_request_detail()
     {
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
-
-        $admin = Admin::create([
-            'name' => 'テスト管理者',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -173,7 +142,6 @@ class AdminAttendanceCorrectionTest extends TestCase
             'status' => 'pending',
             'created_at' => Carbon::now()
         ]);
-
 
         $response = $this->actingAs($admin, 'admin')->get(route('admin.correction.approve.show', [$correction->id]));
         $response->assertStatus(200);
@@ -190,18 +158,8 @@ class AdminAttendanceCorrectionTest extends TestCase
     // 修正申請の承認処理が正しく表示されている
     public function test_Admin_correction_request_approval()
     {
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
-
-        $admin = Admin::create([
-            'name' => 'テスト管理者',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -235,7 +193,6 @@ class AdminAttendanceCorrectionTest extends TestCase
             'status' => 'pending',
             'created_at' => Carbon::now()
         ]);
-
 
         $response = $this->actingAs($admin, 'admin')->post(route('correction.approve.update', [$correction->id]));
 

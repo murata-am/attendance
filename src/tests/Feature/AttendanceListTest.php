@@ -19,12 +19,7 @@ class AttendanceListTest extends TestCase
     public function test_all_show_attendance_list()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -52,12 +47,7 @@ class AttendanceListTest extends TestCase
     public function test_attendance_list_show_current_month()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/attendance/list');
 
@@ -70,12 +60,7 @@ class AttendanceListTest extends TestCase
     public function test_show_prev_month()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
 
         $prevMonth = now()->subMonth();
         $attendanceDate = $prevMonth->copy()->startOfMonth();
@@ -99,12 +84,7 @@ class AttendanceListTest extends TestCase
     public function test_show_next_month()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
 
         $nextMonth = now()->addMonth();
         $attendanceDate = $nextMonth->copy()->startOfMonth();
@@ -128,12 +108,7 @@ class AttendanceListTest extends TestCase
     public function test_show_attendance_detail()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
+        $user = User::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -152,7 +127,6 @@ class AttendanceListTest extends TestCase
 
         $detailResponse = $this->actingAs($user)->get('/attendance/detail/' . $attendance->id);
         $detailResponse->assertStatus(200);
-
     }
 
 

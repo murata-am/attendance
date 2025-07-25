@@ -17,17 +17,8 @@ class AdminAttendanceDetailTest extends TestCase
     // 管理者は選択した詳細画面のデータが見られる
     public function test_admin_attendance_detail()
     {
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
-        $admin = Admin::create([
-            'name' => 'テスト管理者',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -54,20 +45,9 @@ class AdminAttendanceDetailTest extends TestCase
     }
 
     // 出勤時間が退勤時間より後の場合、バリデーションメッセージが表示される
-    public function test_validation_clock_out_before_clock_in
-    (
-    ) {
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
-        $admin = Admin::create([
-            'name' => 'テスト管理者',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+    public function test_validation_clock_out_before_clock_in() {
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -90,25 +70,13 @@ class AdminAttendanceDetailTest extends TestCase
         $response->assertSessionHasErrors([
             'clock_in_out' => '出勤時間もしくは退勤時間が不適切な値です'
         ]);
-
-
     }
 
     // 休憩開始時間が退勤時間より後になっている時、バリデーションメッセージが表示される
-    public function test_validation_break_start_before_clock_out
-    (
-    ) {
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
-        $admin = Admin::create([
-            'name' => 'テスト管理者',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+    public function test_validation_break_start_before_clock_out() 
+    {
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -126,24 +94,13 @@ class AdminAttendanceDetailTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['break_time.0' => '休憩時間が勤務時間外です']);
-
     }
 
     // 休憩終了時間が退勤時間より後になっている時、バリデーションメッセージが表示される
-    public function test_validation_break_end_after_clock_out
-    (
-    ) {
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
-        $admin = Admin::create([
-            'name' => 'テスト管理者',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+    public function test_validation_break_end_after_clock_out()
+    {
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -161,24 +118,13 @@ class AdminAttendanceDetailTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['break_time.0' => '休憩時間が勤務時間外です']);
-
     }
 
     // 備考欄が未入力の時、バリデーションメッセージが表示される
-    public function test_validation_reason
-    (
-    ) {
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-        ]);
-        $admin = Admin::create([
-            'name' => 'テスト管理者',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
-        ]);
+    public function test_validation_reason()
+    {
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
         $attendance = Attendance::create([
             'user_id' => $user->id,
@@ -194,6 +140,5 @@ class AdminAttendanceDetailTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['reason' => '備考を記入してください']);
-
     }
 }

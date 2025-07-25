@@ -11,7 +11,6 @@ class AdminLoginTest extends TestCase
 {
     use RefreshDatabase;
 
-
     // メールアドレスが未入力の時、バリデーションメッセージが表示される
     public function test_admin_login_email_required()
     {

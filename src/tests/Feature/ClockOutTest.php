@@ -15,16 +15,10 @@ class ClockOutTest extends TestCase
     use RefreshDatabase;
 
     // 退勤ボタンが正しく機能する
-
     public function test_clock_out()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => hash::make('password'),
-        ]);
+        $user = User::factory()->create();
 
         $this->actingAs($user);
         Attendance::create([
@@ -47,18 +41,9 @@ class ClockOutTest extends TestCase
     public function test_clock_out_admin_show()
     {
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-        $user = User::create([
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => hash::make('password'),
-        ]);
 
-        $admin = Admin::create([
-            'name' => '管理者ユーザー',
-            'email' => 'admin@example.com',
-            'password' => hash::make('password123'),
-        ]);
+        $user = User::factory()->create();
+        $admin = Admin::factory()->create();
 
         $this->actingAs($user);
         $this->post('/attendance/clockIn');

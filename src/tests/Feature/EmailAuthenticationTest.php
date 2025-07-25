@@ -17,7 +17,6 @@ class EmailAuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-
     // 会員登録後、認証メールが送信される
     public function test_registration_sends_verification_email()
     {
@@ -51,7 +50,6 @@ class EmailAuthenticationTest extends TestCase
         $response = $this->actingAs($user)->get('/email/verify');
         $response->assertStatus(200);
         $response->assertSee('認証はこちらから');
-
     }
 
     // メール認証サイトのメール認証を完了すると、勤怠画面に遷移する
