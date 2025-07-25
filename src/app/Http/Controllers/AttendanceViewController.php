@@ -101,8 +101,8 @@ class AttendanceViewController extends Controller
     {
         $attendance = Attendance::with([
             'breakTimes',
-            'correctionRequest.correctionBreakTimes',
-            'correctionRequest.approval'
+            'correctionRequests.correctionBreakTimes',
+            'correctionRequests.approval'
         ])->findOrFail($attendance_id);
 
         $correction = null;
@@ -114,7 +114,7 @@ class AttendanceViewController extends Controller
                 ->findOrFail($correction_request_id);
         } else {
             // 最新の修正申請
-            $correction = $attendance->correctionRequest;
+            $correction = $attendance->correctionRequests()->latest()->with('correctionBreakTimes', 'approval')->first();
         }
 
         $name = $attendance->user->name;

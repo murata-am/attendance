@@ -75,7 +75,13 @@
             </tr>
 
             @php
-                $breakTimes = $correction ? $correction->correctionBreakTimes : $attendance->breakTimes;
+                if ($status === 'pending') {
+                 // 承認待ちのときは、申請された休憩時間を表示
+                    $breakTimes = $correction->correctionBreakTimes ?? collect();
+            } else {
+                // 通常 or 承認済みのときは、反映済みの勤怠データを表示
+                $breakTimes = $attendance->breakTimes ?? collect();
+            }
             @endphp
 
             @foreach ($breakTimes ?? [] as $i => $break)

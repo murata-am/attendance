@@ -60,8 +60,8 @@ class AdminAttendanceController extends Controller
         $attendance = Attendance::with([
             'user',
             'breakTimes',
-            'correctionRequest.correctionBreakTimes',
-            'CorrectionRequest.approval'
+            'correctionRequests.correctionBreakTimes',
+            'correctionRequests.approval'
         ])->findOrFail($id);
 
         $name = $attendance->user->name;
@@ -70,9 +70,11 @@ class AdminAttendanceController extends Controller
         $work_year = $carbonDate->year . '年';
         $work_month_day = $carbonDate->format('n月j日');
 
-        $status = optional(optional($attendance->correctionRequest)->approval)->status;
+        $correction = $attendance->correctionRequests
+            ->sortByDesc('created_at')
+            ->first();
 
-        $correction = null;
+        $status = optional(optional($correction)->approval)->status;
 
         if ($status === 'pending' && $attendance->correctionRequest) {
             $correction = $attendance->correctionRequest;

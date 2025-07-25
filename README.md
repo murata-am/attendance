@@ -40,7 +40,7 @@
 - SQL 8.0.26
 
 ## ER図
-![alt text](ER.png)
+![alt text](ER-1.png)
 
 ## メール認証
 
